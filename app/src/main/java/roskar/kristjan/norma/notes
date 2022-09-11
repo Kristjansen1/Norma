@@ -1,0 +1,77 @@
+
+# 1 # ko se app odpre prikaze vnose samo za tekoci mesec
+
+
+## TABELE
+
+#1 MESCI : 0822
+
+
+
+
+
+##### prvi displayData()... izpise celotno bazo v recylcerview ########################
+
+
+private fun displayData() {
+        GlobalScope.launch(Dispatchers.IO) {
+            val dbData: List<Norma> = appDb.normaDao().getAll()
+            var itemList: ItemList
+
+            dbData.forEach {
+                val date = it.date
+                val hours = it.hours
+                itemList = ItemList(date!!, hours!!)
+                itemListArray.add((itemList))
+            }
+        }
+
+
+################################################################################
+
+
+
+
+/*
+//populate DB
+var cDate = LocalDateTime.now()
+val formater = DateTimeFormatter.ofPattern("ddMMyy")
+var formated: String
+
+GlobalScope.launch {
+    for (x in 1..1256) {
+        val r = (1..8).shuffled().last()
+        val nDate = cDate.plusDays(x.toLong())
+        formated = nDate.format(formater)
+
+        val n = Norma(null,formated.toInt(),r)
+        appDb.normaDao().insert(n)
+
+    }
+}
+*/
+
+/*
+//izpisi glede na mesec ,.. uporabljeno v displaydata()
+GlobalScope.launch(Dispatchers.IO) {
+    val mesci: List<Norma> = appDb.normaDao().findByMonth("%0922%")
+
+    mesci.forEach {
+        val datum = it.date
+        val ure = it.hours
+        Log.d("norma123","norma $datum ure pa $ure")
+    }
+
+}
+*/
+
+/*
+//izbrise to kar kliknes,... uporabis v oneclicklistener za recyclerview
+GlobalScope.launch {
+    val x: Norma = appDb.normaDao().findByDate(itemListArray[position].date)
+    appDb.normaDao().delete(Norma(x.id, x.date, x.hours))
+    itemListArray.removeAt(position)
+    newRecyclerView.adapter!!.notifyItemRemoved(position)
+
+
+}*/
