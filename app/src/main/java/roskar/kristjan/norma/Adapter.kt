@@ -5,12 +5,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import roskar.kristjan.norma.databinding.ListItemBinding
+import roskar.kristjan.norma.databinding.ListItemEtBinding
 
 class Adapter (private val itemList: ArrayList<ItemList>) : RecyclerView.Adapter<Adapter.MyViewHolder>() {
 
     inner class MyViewHolder(binding: ListItemBinding, listener: onItemClickListener): RecyclerView.ViewHolder(binding.root) {
         val listItemDate = binding.listItemDate
-        val listItemHours = binding.listItemHours
+        val listItemNormaHours = binding.listItemNormaHours
+        val listItemWorkingHours = binding.listItemWorkingHours
+        val listItemWorkplace = binding.listItemWorkplace
+        val selectedPos = RecyclerView.NO_POSITION
+
 
         init {
             binding.root.setOnClickListener {
@@ -37,9 +42,12 @@ class Adapter (private val itemList: ArrayList<ItemList>) : RecyclerView.Adapter
         Log.d("itemcur",currentItem.toString())
 
         val dateFormatted = Date.formatDate(currentItem.date.toString(),"dMMyy","dd. EE")
-
         holder.listItemDate.text = dateFormatted
-        holder.listItemHours.text = currentItem.hours.toString()
+        //holder.listItemHours.setText(currentItem.hours.toString())
+        holder.listItemNormaHours.text = currentItem.normaHours.toString()
+        holder.listItemWorkingHours.text = currentItem.workingHours.toString()
+        holder.listItemWorkplace.text = currentItem.workplace.toString()
+
     }
 
     override fun getItemCount(): Int {

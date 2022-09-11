@@ -16,4 +16,4 @@ object Date {
         val formatTo = DateTimeFormatter.ofPattern(formatNew)
         return dateToFormat.format(formatTo).toString()
     }
-} 
+}

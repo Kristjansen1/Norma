@@ -8,18 +8,41 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import roskar.kristjan.norma.room.AppDatabase
+import roskar.kristjan.norma.room.Norma
 
 object Data {
 
      @SuppressLint("NotifyDataSetChanged")
-     fun addData(appDb: AppDatabase, date: Int, hours: Int, itemListArray: ArrayList<ItemList>, newRecyclerView: RecyclerView) {
-        val norma = Norma(null, date, hours)
+     fun addData(
+         appDb: AppDatabase,
+         date: Int,
+         normaHours: Int,
+         workingHours: Int,
+         workplace: String,
+         itemListArray: ArrayList<ItemList>,
+         newRecyclerView: RecyclerView
+     ) {
+
+        val norma = Norma(
+            null,
+            date,
+            normaHours,
+            workingHours,
+            workplace
+        )
+
         GlobalScope.launch(Dispatchers.IO) {
             appDb.normaDao().insert(norma)
         }
-        itemListArray.add(ItemList(date, hours))
+        itemListArray.add(
+            ItemList(
+                date,
+                normaHours,
+                workingHours,
+                workplace
+            )
+        )
         newRecyclerView.adapter!!.notifyDataSetChanged()
     }
 
@@ -41,22 +64,25 @@ object Data {
         })
     }
 
-    fun populate(appDb: AppDatabase,withMonth: String) : ArrayList<ItemList> {
+    fun populate(appDb: AppDatabase, withMonth: String) : ArrayList<ItemList> {
         val itemListArray: ArrayList<ItemList> = arrayListOf()
 
         GlobalScope.launch(Dispatchers.IO) {
 
             //Prikaze vnose za tekoci mesec...
 
-            //val month = currentDate.format(dateFormat)
-            val month = Date.currentDateWithFormat(withMonth)
-            val match = "%$month%"
+            val match = "%$withMonth%"
             val dbData: List<Norma> = appDb.normaDao().findByMonth(match)
             var itemList: ItemList
             dbData.forEach {
-                val date = it.date
-                val hours = it.hours
-                itemList = ItemList(date!!, hours!!)
+
+                itemList = ItemList(
+                    date = it.date!!,
+                    normaHours = it.normaHours!!,
+                    workingHours = it.workingHours!!,
+                    workplace = it.workplace!!
+                )
+
                 Log.d("nevemkej",it.date.toString())
                 itemListArray.add((itemList))
             }

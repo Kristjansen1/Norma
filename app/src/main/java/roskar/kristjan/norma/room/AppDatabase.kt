@@ -1,4 +1,4 @@
-package roskar.kristjan.norma
+package roskar.kristjan.norma.room
 
 import android.content.Context
 import androidx.room.Database
