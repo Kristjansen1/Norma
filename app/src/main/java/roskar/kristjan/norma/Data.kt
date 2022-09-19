@@ -3,6 +3,9 @@ package roskar.kristjan.norma
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
+import android.widget.ListView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +13,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import roskar.kristjan.norma.room.AppDatabase
 import roskar.kristjan.norma.room.Norma
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 object Data {
 
@@ -52,7 +57,13 @@ object Data {
         recyclerView.adapter = adapter
 
         adapter.setOnItemClickListener(object : Adapter.onItemClickListener {
-            override fun onItemClick(position: Int) {
+            override fun onItemClick(
+                position: Int,
+                listItemAdd: ImageView,
+                listItemRemove: ImageView
+            ) {
+                listItemAdd.visibility = View.VISIBLE
+                listItemRemove.visibility = View.VISIBLE
                 Toast.makeText(
                     context,
                     "You Clicked on item no. $position",
@@ -60,6 +71,9 @@ object Data {
                 ).show()
 
             }
+
+           /* override fun onAddButtonClicked(position: Int, listItemAdd: ImageView) {
+            }*/
 
         })
     }
@@ -77,13 +91,13 @@ object Data {
             dbData.forEach {
 
                 itemList = ItemList(
-                    date = it.date!!,
+                    date = it.norma_date!!,
                     normaHours = it.normaHours!!,
                     workingHours = it.workingHours!!,
                     workplace = it.workplace!!
                 )
 
-                Log.d("nevemkej",it.date.toString())
+                Log.d("nevemkej",it.norma_date.toString())
                 itemListArray.add((itemList))
             }
         }
@@ -91,5 +105,21 @@ object Data {
     }
     fun deleteData() {
 
+    }
+
+    fun fillDB(appDb: AppDatabase) {
+        var cDate = LocalDateTime.now()
+        val formater = DateTimeFormatter.ofPattern("ddMMyy")
+        var formated: String
+
+        GlobalScope.launch {
+            for (x in 1..1256) {
+            val r = (1..8).shuffled().last()
+            val nDate = cDate.plusDays(x.toLong())
+            formated = nDate.format(formater)
+            val n = Norma(null,formated.toInt(),r,8,"linija")
+            appDb.normaDao().insert(n)
+            }
+        }
     }
 }

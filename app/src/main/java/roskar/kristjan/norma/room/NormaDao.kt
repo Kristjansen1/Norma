@@ -8,6 +8,9 @@ interface NormaDao {
     @Query("SELECT * FROM norma_table")
     fun getAll(): List<Norma>
 
+    @Query("SELECT * FROM month_table")
+    fun getAllMonth(): List<Month>
+
     @Query("SELECT * FROM norma_table WHERE datum LIKE :date")
     fun findByDate(date: Int): Norma
 
