@@ -7,10 +7,12 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import roskar.kristjan.norma.databinding.ListItemBinding
 import roskar.kristjan.norma.room.AppDatabase
 import roskar.kristjan.norma.room.Norma
 import java.time.LocalDateTime
@@ -53,29 +55,7 @@ object Data {
 
     fun displayData (context: Context, recyclerView: RecyclerView, itemListArray: ArrayList<ItemList>) {
 
-        val adapter = Adapter(itemListArray)
-        recyclerView.adapter = adapter
 
-        adapter.setOnItemClickListener(object : Adapter.onItemClickListener {
-            override fun onItemClick(
-                position: Int,
-                listItemAdd: ImageView,
-                listItemRemove: ImageView
-            ) {
-                listItemAdd.visibility = View.VISIBLE
-                listItemRemove.visibility = View.VISIBLE
-                Toast.makeText(
-                    context,
-                    "You Clicked on item no. $position",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-            }
-
-           /* override fun onAddButtonClicked(position: Int, listItemAdd: ImageView) {
-            }*/
-
-        })
     }
 
     fun populate(appDb: AppDatabase, withMonth: String) : ArrayList<ItemList> {

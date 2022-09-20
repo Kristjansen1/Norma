@@ -20,17 +20,22 @@ class Adapter (private val itemList: ArrayList<ItemList>) : RecyclerView.Adapter
         val listItemRemove = binding.listItemRemove
 
         init {
-            binding.root.setOnClickListener {
-                listener.onItemClick(adapterPosition,binding.listItemAdd,binding.listItemRemove)
-                //listener.onAddButtonClicked(adapterPosition,binding.listItemAdd)
+            binding.root.setOnClickListener{
+                listener.onItemClick(adapterPosition)
+                listItemAdd.visibility = View.VISIBLE
+                listItemRemove.visibility = View.VISIBLE
+
+            }
+            listItemAdd.setOnClickListener {
+                listener.onAddButtonClicked(adapterPosition)
             }
         }
     }
 
     private lateinit var mListener: onItemClickListener
     interface onItemClickListener {
-        fun onItemClick(position: Int, listItemAdd: ImageView, listItemRemove: ImageView)
-        //fun onAddButtonClicked(position: Int, listItemAdd: ImageView)
+        fun onItemClick(position: Int)
+        fun onAddButtonClicked(position: Int)
     }
 
     fun setOnItemClickListener(listener: onItemClickListener) {
@@ -53,6 +58,7 @@ class Adapter (private val itemList: ArrayList<ItemList>) : RecyclerView.Adapter
         holder.listItemNormaHours.text = currentItem.normaHours.toString()
         holder.listItemWorkingHours.text = currentItem.workingHours.toString()
         holder.listItemWorkplace.text = currentItem.workplace
+        holder.setIsRecyclable(false)
 
     }
 
