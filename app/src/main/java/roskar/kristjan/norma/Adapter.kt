@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListAdapter
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import roskar.kristjan.norma.databinding.ListItemBinding
 
 class Adapter (private val itemList: ArrayList<ItemList>) : RecyclerView.Adapter<Adapter.MyViewHolder>() {
-
+    var clickedPosition = 82
     inner class MyViewHolder(binding: ListItemBinding, listener: onItemClickListener): RecyclerView.ViewHolder(binding.root) {
         val listItemDate = binding.listItemDate
         val listItemNormaHours = binding.listItemNormaHours
@@ -21,9 +22,13 @@ class Adapter (private val itemList: ArrayList<ItemList>) : RecyclerView.Adapter
 
         init {
             binding.root.setOnClickListener{
+
                 listener.onItemClick(adapterPosition)
-                listItemAdd.visibility = View.VISIBLE
                 listItemRemove.visibility = View.VISIBLE
+                listItemAdd.visibility = View.VISIBLE
+                clickedPosition = adapterPosition
+
+                Log.d("adapterposition","adapterposition $adapterPosition")
 
             }
             listItemAdd.setOnClickListener {
@@ -49,6 +54,11 @@ class Adapter (private val itemList: ArrayList<ItemList>) : RecyclerView.Adapter
 
     }
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+
+        if (clickedPosition == position) {
+            holder.listItemAdd.visibility = View.VISIBLE
+            holder.listItemRemove.visibility = View.VISIBLE
+        }
         val currentItem = itemList[position]
         Log.d("itemcur",currentItem.toString())
 
@@ -58,8 +68,7 @@ class Adapter (private val itemList: ArrayList<ItemList>) : RecyclerView.Adapter
         holder.listItemNormaHours.text = currentItem.normaHours.toString()
         holder.listItemWorkingHours.text = currentItem.workingHours.toString()
         holder.listItemWorkplace.text = currentItem.workplace
-        holder.setIsRecyclable(false)
-
+        //holder.setIsRecyclable(false)
     }
 
     override fun getItemCount(): Int {

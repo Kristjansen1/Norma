@@ -1,6 +1,7 @@
 package roskar.kristjan.norma
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ListView
@@ -19,8 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView : RecyclerView
     private var itemListArray : ArrayList<ItemList> = arrayListOf()
     private lateinit var appDb : AppDatabase
-
-
+    var clickedPosition = 82
+    var firstClick = true
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,17 +45,27 @@ class MainActivity : AppCompatActivity() {
         val adapter = Adapter(itemListArray)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        //recyclerView.recycledViewPool.setMaxRecycledViews(0,0);
 
         adapter.setOnItemClickListener(object : Adapter.onItemClickListener {
+
             override fun onItemClick(position: Int) {
+                if (firstClick) {
+                    clickedPosition = position
+                    firstClick = false
+                }
+                var holder = recyclerView.findViewHolderForAdapterPosition(position)
+                val listItemAdd = (holder as Adapter.MyViewHolder).listItemAdd
+                val listItemRemove = holder.listItemRemove
 
-                //var holder = recyclerView.findViewHolderForAdapterPosition(position)
-                //val listItemAdd = (holder as Adapter.MyViewHolder).listItemAdd
-                //val listItemRemove = holder.listItemRemove
-                //listItemRemove.visibility = View.VISIBLE
-                //listItemAdd.visibility = View.VISIBLE
-
+                if (clickedPosition != position && !firstClick) {
+                    Log.d("clicked", "$clickedPosition lol $position")
+                    var holder = recyclerView.findViewHolderForAdapterPosition(clickedPosition)
+                    val listItemAdd = (holder as Adapter.MyViewHolder).listItemAdd
+                    val listItemRemove = holder.listItemRemove
+                    listItemRemove.visibility = View.INVISIBLE
+                    listItemAdd.visibility = View.INVISIBLE
+                    clickedPosition = position
+                }
                 Toast.makeText(
                     this@MainActivity,
                     "You Clicked on item no. $position",
