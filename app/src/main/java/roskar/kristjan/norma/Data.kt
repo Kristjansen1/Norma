@@ -3,62 +3,47 @@ package roskar.kristjan.norma
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import android.view.View
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import roskar.kristjan.norma.databinding.ListItemBinding
 import roskar.kristjan.norma.room.AppDatabase
 import roskar.kristjan.norma.room.Norma
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 object Data {
+    @OptIn(DelicateCoroutinesApi::class)
+    @SuppressLint("NotifyDataSetChanged")
+    fun addData(
+        appDb: AppDatabase,
+        date: Int,
+        normaHours: Int,
+        workingHours: Int,
+        workplace: String,
+        itemListArray: ArrayList<ItemList>,
+        newRecyclerView:
+        RecyclerView
+    ) {
 
-     @SuppressLint("NotifyDataSetChanged")
-     fun addData(
-         appDb: AppDatabase,
-         date: Int,
-         normaHours: Int,
-         workingHours: Int,
-         workplace: String,
-         itemListArray: ArrayList<ItemList>,
-         newRecyclerView: RecyclerView
-     ) {
 
-        val norma = Norma(
-            null,
-            date,
-            normaHours,
-            workingHours,
-            workplace
-        )
-
+        val norma = Norma(null, date, normaHours, workingHours, workplace)
         GlobalScope.launch(Dispatchers.IO) {
             appDb.normaDao().insert(norma)
         }
-        itemListArray.add(
-            ItemList(
-                date,
-                normaHours,
-                workingHours,
-                workplace
-            )
-        )
+
+
+        itemListArray.add(ItemList(date, normaHours, workingHours, workplace))
         newRecyclerView.adapter!!.notifyDataSetChanged()
     }
 
-    fun displayData (context: Context, recyclerView: RecyclerView, itemListArray: ArrayList<ItemList>) {
-
+    fun displayData(context: Context, recyclerView: RecyclerView, itemListArray: ArrayList<ItemList>) {
 
     }
 
-    fun populate(appDb: AppDatabase, withMonth: String) : ArrayList<ItemList> {
+    @OptIn(DelicateCoroutinesApi::class)
+    fun populate(appDb: AppDatabase, withMonth: String): ArrayList<ItemList> {
         val itemListArray: ArrayList<ItemList> = arrayListOf()
 
         GlobalScope.launch(Dispatchers.IO) {
@@ -77,12 +62,13 @@ object Data {
                     workplace = it.workplace!!
                 )
 
-                Log.d("nevemkej",it.norma_date.toString())
+                Log.d("nevemkej", it.norma_date.toString())
                 itemListArray.add((itemList))
             }
         }
         return itemListArray
     }
+
     fun deleteData() {
 
     }
@@ -94,11 +80,11 @@ object Data {
 
         GlobalScope.launch {
             for (x in 1..1256) {
-            val r = (1..8).shuffled().last()
-            val nDate = cDate.plusDays(x.toLong())
-            formated = nDate.format(formater)
-            val n = Norma(null,formated.toInt(),r,8,"linija")
-            appDb.normaDao().insert(n)
+                val r = (1..8).shuffled().last()
+                val nDate = cDate.plusDays(x.toLong())
+                formated = nDate.format(formater)
+                val n = Norma(null, formated.toInt(), r, 8, "linija")
+                appDb.normaDao().insert(n)
             }
         }
     }

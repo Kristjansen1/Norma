@@ -20,9 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView : RecyclerView
     private var itemListArray : ArrayList<ItemList> = arrayListOf()
     private lateinit var appDb : AppDatabase
-    var clickedPosition = 82
-    var firstClick = true
     private lateinit var binding: ActivityMainBinding
+    private var clickedPosition = 82
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,53 +29,37 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         appDb = AppDatabase.getDatabase(this)
         recyclerView = binding.recylerView
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context,DividerItemDecoration.VERTICAL))
-        //Data.fillDB(appDb)
+
+
+        recyclerView.let {
+            it.layoutManager = LinearLayoutManager(this)
+            it.setHasFixedSize(true)
+            it.addItemDecoration(DividerItemDecoration(recyclerView.context,DividerItemDecoration.VERTICAL))
+        }
+
         itemListArray = Data.populate(appDb,Date.currentDateWithFormat("MMyy"))
-
         Data.displayData(this,recyclerView,itemListArray)
-
 
 
         val adapter = Adapter(itemListArray)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+
 
         adapter.setOnItemClickListener(object : Adapter.onItemClickListener {
-
             override fun onItemClick(position: Int) {
-                if (firstClick) {
-                    clickedPosition = position
-                    firstClick = false
-                }
-                //Log.d("adapterposition1", "$clickedPosition lol $position")
-                var holder = recyclerView.findViewHolderForAdapterPosition(position)
-                val listItemAdd = (holder as Adapter.MyViewHolder).listItemAdd
-                val listItemRemove = holder.listItemRemove
-
-                if (clickedPosition != position && !firstClick) {
-                    //Log.d("clicked", "$clickedPosition lol $position")
-                    //Log.d("adapterposition2", "$clickedPosition lol $position")
-
-                    var holder = recyclerView.findViewHolderForAdapterPosition(clickedPosition)
-                    if (holder != null) {
-                        //val listItemAdd = (holder as Adapter.MyViewHolder).listItemAdd
-                        //val listItemRemove = holder.listItemRemove
+                if (clickedPosition != position) {
+                    val holder = recyclerView.findViewHolderForAdapterPosition(clickedPosition)
+                    holder?.let {
+                        val listItemAdd = (holder as Adapter.MyViewHolder).listItemAdd
+                        val listItemRemove = holder.listItemRemove
                         listItemRemove.visibility = View.INVISIBLE
                         listItemAdd.visibility = View.INVISIBLE
                     }
                     clickedPosition = position
                 }
-                /*Toast.makeText(
-                    this@MainActivity,
-                    "You Clicked on item no. $position",
-                    Toast.LENGTH_SHORT
-                ).show()*/
-
             }
             override fun onAddButtonClicked(position: Int) {
                 Toast.makeText(
@@ -86,14 +69,16 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
 
-            /* override fun onAddButtonClicked(position: Int, listItemAdd: ImageView) {
-             }*/
+            override fun onRemoveButtonClicked(position: Int) {
+                Toast.makeText(
+                    this@MainActivity,
+                    "You Clicked remove $position",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
         })
     }
-
-    //@SuppressLint("NotifyDataSetChanged")
-
 
 }
 
