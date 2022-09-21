@@ -53,24 +53,29 @@ class MainActivity : AppCompatActivity() {
                     clickedPosition = position
                     firstClick = false
                 }
+                //Log.d("adapterposition1", "$clickedPosition lol $position")
                 var holder = recyclerView.findViewHolderForAdapterPosition(position)
                 val listItemAdd = (holder as Adapter.MyViewHolder).listItemAdd
                 val listItemRemove = holder.listItemRemove
 
                 if (clickedPosition != position && !firstClick) {
-                    Log.d("clicked", "$clickedPosition lol $position")
+                    //Log.d("clicked", "$clickedPosition lol $position")
+                    //Log.d("adapterposition2", "$clickedPosition lol $position")
+
                     var holder = recyclerView.findViewHolderForAdapterPosition(clickedPosition)
-                    val listItemAdd = (holder as Adapter.MyViewHolder).listItemAdd
-                    val listItemRemove = holder.listItemRemove
-                    listItemRemove.visibility = View.INVISIBLE
-                    listItemAdd.visibility = View.INVISIBLE
+                    if (holder != null) {
+                        //val listItemAdd = (holder as Adapter.MyViewHolder).listItemAdd
+                        //val listItemRemove = holder.listItemRemove
+                        listItemRemove.visibility = View.INVISIBLE
+                        listItemAdd.visibility = View.INVISIBLE
+                    }
                     clickedPosition = position
                 }
-                Toast.makeText(
+                /*Toast.makeText(
                     this@MainActivity,
                     "You Clicked on item no. $position",
                     Toast.LENGTH_SHORT
-                ).show()
+                ).show()*/
 
             }
             override fun onAddButtonClicked(position: Int) {

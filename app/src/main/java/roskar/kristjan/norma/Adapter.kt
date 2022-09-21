@@ -60,11 +60,10 @@ class Adapter (private val itemList: ArrayList<ItemList>) : RecyclerView.Adapter
             holder.listItemRemove.visibility = View.VISIBLE
         }
         val currentItem = itemList[position]
-        Log.d("itemcur",currentItem.toString())
+        Log.d("itemcur","$currentItem $position")
 
         val dateFormatted = Date.formatDate(currentItem.date.toString(),"dMMyy","dd. EE")
         holder.listItemDate.text = dateFormatted
-        //holder.listItemHours.setText(currentItem.hours.toString())
         holder.listItemNormaHours.text = currentItem.normaHours.toString()
         holder.listItemWorkingHours.text = currentItem.workingHours.toString()
         holder.listItemWorkplace.text = currentItem.workplace
