@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import roskar.kristjan.norma.databinding.ListItemBinding
 
@@ -25,8 +26,13 @@ class Adapter(private val itemList: ArrayList<ItemList>) :
         init {
             binding.root.setOnClickListener {
                 listener.onItemClick(adapterPosition)
-                listItemRemove.visibility = View.VISIBLE
-                listItemAdd.visibility = View.VISIBLE
+                if (listItemAdd.isVisible) {
+                    listItemAdd.visibility = View.INVISIBLE
+                    listItemRemove.visibility = View.INVISIBLE
+                } else {
+                    listItemAdd.visibility = View.VISIBLE
+                    listItemRemove.visibility = View.VISIBLE
+                }
                 clickedPosition = adapterPosition
             }
             listItemAdd.setOnClickListener {

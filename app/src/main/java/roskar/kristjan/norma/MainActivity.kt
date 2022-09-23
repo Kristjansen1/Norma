@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import roskar.kristjan.norma.databinding.ActivityMainBinding
+import roskar.kristjan.norma.databinding.AddDataBinding
 import roskar.kristjan.norma.databinding.ListItemBinding
 import roskar.kristjan.norma.room.AppDatabase
 import java.lang.reflect.Type
@@ -45,7 +46,10 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = Adapter(itemListArray)
         recyclerView.adapter = adapter
-        AdapterOnClick.onClickOperation(adapter, context = this,recyclerView)
+
+        AdapterOnClick.onClickOperation(adapter, context = this,recyclerView,binding.rootLayout)
+
+
 
     }
 
