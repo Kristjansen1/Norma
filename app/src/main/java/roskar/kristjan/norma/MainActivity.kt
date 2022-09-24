@@ -24,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val addMonth = binding.addMonth
+        val removeMonth = binding.removeMonth
+        val selectMonth = binding.selectMonth
+
         appDb = AppDatabase.getDatabase(this)
         recyclerView = binding.recylerView
 
@@ -31,10 +34,16 @@ class MainActivity : AppCompatActivity() {
         recyclerView.let {
             it.layoutManager = LinearLayoutManager(this)
             it.setHasFixedSize(true)
-            it.addItemDecoration(DividerItemDecoration(recyclerView.context,DividerItemDecoration.VERTICAL))
+            it.addItemDecoration(
+                DividerItemDecoration(
+                    recyclerView.context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
 
-        itemListArray = Data.populate(appDb, Date.currentDateWithFormat("Myy"))
+        //itemListArray = Data.populate(appDb, Date.currentDateWithFormat("Myy"))
+        itemListArray = Data.populate(appDb, "123")
         Data.displayData(this, recyclerView, itemListArray)
 
 
@@ -44,6 +53,13 @@ class MainActivity : AppCompatActivity() {
 
         addMonth.setOnClickListener {
             Date.pickDate(this, appDb)
+
+
+        }
+
+        removeMonth.setOnClickListener {
+            //Data.removeMonth()
+
         }
 
     }

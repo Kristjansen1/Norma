@@ -97,21 +97,18 @@ object Data {
     }
 
     fun addMonth(year: Int, month: Int, day: Int, appDb: AppDatabase) {
+
         var fixMonth = month
         fixMonth++
         val date = "$day/$fixMonth/$year"
         val dateFormated = Date.formatDate(date, "d/M/yyyy", "MMyy")
-
         val monthToAdd = Month(null, dateFormated.toInt())
-        GlobalScope.launch(Dispatchers.IO) {
-            appDb.normaDao().insert_month(monthToAdd)
-        }
-
         var norma: Norma
         val yearMonth = YearMonth.of(year, fixMonth)
         var monthLength = yearMonth.lengthOfMonth()
 
         GlobalScope.launch(Dispatchers.IO) {
+            appDb.normaDao().insert_month(monthToAdd)
             for (day1 in 1..monthLength) {
                 var d = "$day1/$fixMonth/$year"
                 val df = Date.formatDate(d, "d/M/yyyy", "dMMyy").toInt()
@@ -120,8 +117,13 @@ object Data {
                 appDb.normaDao().insert_norma(norma)
             }
         }
+    }
 
-
+    fun returnPick(year: Int, month: Int, day: Int): String {
+        var fixMonth = month
+        fixMonth++
+        val date = "$day/$fixMonth/$year"
+        return date
     }
 }
 

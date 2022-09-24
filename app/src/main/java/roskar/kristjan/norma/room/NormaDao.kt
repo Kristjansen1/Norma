@@ -17,6 +17,9 @@ interface NormaDao {
     @Query("SELECT * FROM norma_table WHERE datum like :month")
     fun findByMonth(month: String): List<Norma>
 
+    @Query("DELETE FROM norma_table WHERE datum like :month")
+    fun deleteByMonth(month: String): Int
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert_norma(norma: Norma)
 

@@ -3,13 +3,11 @@ package roskar.kristjan.norma
 import android.app.DatePickerDialog
 import android.content.Context
 import android.icu.util.Calendar
-import android.util.Log
 import android.widget.DatePicker
 import roskar.kristjan.norma.room.AppDatabase
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.properties.Delegates
 
 object Date {
     fun currentDateWithFormat(format: String): String {
@@ -33,7 +31,7 @@ object Date {
 
         DatePickerDialog(
             context,
-            DatePickerDialog.OnDateSetListener { _: DatePicker, mYear: Int, mMonth: Int, mDay: Int ->
+            { _: DatePicker, mYear: Int, mMonth: Int, mDay: Int ->
                 Data.addMonth(mYear, mMonth, mDay, appDb)
             },
             year,
