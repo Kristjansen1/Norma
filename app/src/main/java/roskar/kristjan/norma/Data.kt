@@ -9,8 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import roskar.kristjan.norma.room.AppDatabase
+import roskar.kristjan.norma.room.Month
 import roskar.kristjan.norma.room.Norma
 import java.time.LocalDateTime
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 object Data {
@@ -30,7 +32,7 @@ object Data {
 
         val norma = Norma(null, date, normaHours, workingHours, workplace)
         GlobalScope.launch(Dispatchers.IO) {
-            appDb.normaDao().insert(norma)
+            appDb.normaDao().insert_norma(norma)
         }
 
 
@@ -38,7 +40,11 @@ object Data {
         newRecyclerView.adapter!!.notifyDataSetChanged()
     }
 
-    fun displayData(context: Context, recyclerView: RecyclerView, itemListArray: ArrayList<ItemList>) {
+    fun displayData(
+        context: Context,
+        recyclerView: RecyclerView,
+        itemListArray: ArrayList<ItemList>
+    ) {
 
     }
 
@@ -52,6 +58,7 @@ object Data {
 
             val match = "%$withMonth%"
             val dbData: List<Norma> = appDb.normaDao().findByMonth(match)
+            Log.d("findbymonth", match)
             var itemList: ItemList
             dbData.forEach {
 
@@ -84,8 +91,38 @@ object Data {
                 val nDate = cDate.plusDays(x.toLong())
                 formated = nDate.format(formater)
                 val n = Norma(null, formated.toInt(), r, 8, "linija")
-                appDb.normaDao().insert(n)
+                appDb.normaDao().insert_norma(n)
             }
         }
     }
+
+    fun addMonth(year: Int, month: Int, day: Int, appDb: AppDatabase) {
+        var fixMonth = month
+        fixMonth++
+        val date = "$day/$fixMonth/$year"
+        val dateFormated = Date.formatDate(date, "d/M/yyyy", "MMyy")
+
+        val monthToAdd = Month(null, dateFormated.toInt())
+        GlobalScope.launch(Dispatchers.IO) {
+            appDb.normaDao().insert_month(monthToAdd)
+        }
+
+        var norma: Norma
+        val yearMonth = YearMonth.of(year, fixMonth)
+        var monthLength = yearMonth.lengthOfMonth()
+
+        GlobalScope.launch(Dispatchers.IO) {
+            for (day1 in 1..monthLength) {
+                var d = "$day1/$fixMonth/$year"
+                val df = Date.formatDate(d, "d/M/yyyy", "dMMyy").toInt()
+
+                norma = Norma(null, df, 0, 0, "linija")
+                appDb.normaDao().insert_norma(norma)
+            }
+        }
+
+
+    }
 }
+
+

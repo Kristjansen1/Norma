@@ -25,15 +25,17 @@ class Adapter(private val itemList: ArrayList<ItemList>) :
 
         init {
             binding.root.setOnClickListener {
-                listener.onItemClick(adapterPosition)
                 if (listItemAdd.isVisible) {
                     listItemAdd.visibility = View.INVISIBLE
                     listItemRemove.visibility = View.INVISIBLE
+                    clickedPosition = 82
                 } else {
                     listItemAdd.visibility = View.VISIBLE
                     listItemRemove.visibility = View.VISIBLE
+                    listener.onItemClick(adapterPosition)
+                    clickedPosition = adapterPosition
+
                 }
-                clickedPosition = adapterPosition
             }
             listItemAdd.setOnClickListener {
                 listener.onAddButtonClicked(adapterPosition)
@@ -62,7 +64,6 @@ class Adapter(private val itemList: ArrayList<ItemList>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         if (clickedPosition == position) {
-
             holder.listItemAdd.visibility = View.VISIBLE
             holder.listItemRemove.visibility = View.VISIBLE
         }
