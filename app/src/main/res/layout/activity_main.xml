@@ -33,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/addMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             android:clickable="true"
             app:srcCompat="@android:drawable/ic_menu_add" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/removeMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:clickable="true"
             app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/selectMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:clickable="true"
             app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,5 +97,6 @@
             android:layout_height="wrap_content"
             android:text="normaUre" />
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

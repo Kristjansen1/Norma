@@ -9,10 +9,8 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,23 +20,28 @@
         <TextView
             android:id="@+id/listItemDate"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:text="TextView"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/listItemNormaHours"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:text="TextView"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/listItemWorkingHours"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:text="TextView"
             android:textAlignment="center" />
@@ -46,12 +49,13 @@
         <TextView
             android:id="@+id/listItemWorkplace"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:text="TextView"
             android:textAlignment="center" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/listItemAdd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -59,7 +63,7 @@
             android:visibility="invisible"
             app:srcCompat="@android:drawable/ic_menu_add" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/listItemRemove"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

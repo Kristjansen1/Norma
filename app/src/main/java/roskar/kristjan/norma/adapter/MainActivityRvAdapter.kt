@@ -1,4 +1,4 @@
-package roskar.kristjan.norma
+package roskar.kristjan.norma.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import roskar.kristjan.norma.Date
+import roskar.kristjan.norma.model.NormaList
 import roskar.kristjan.norma.databinding.ListItemBinding
 
-class Adapter(private val itemList: ArrayList<ItemList>) :
-    RecyclerView.Adapter<Adapter.MyViewHolder>() {
+class MainActivityRvAdapter(private val normaList: ArrayList<NormaList>) :
+    RecyclerView.Adapter<MainActivityRvAdapter.MyViewHolder>() {
 
     var clickedPosition = 82
     private lateinit var mListener: onItemClickListener
@@ -22,7 +24,6 @@ class Adapter(private val itemList: ArrayList<ItemList>) :
         val listItemWorkplace = binding.listItemWorkplace
         val listItemAdd = binding.listItemAdd
         val listItemRemove = binding.listItemRemove
-
         init {
             binding.root.setOnClickListener {
                 if (listItemAdd.isVisible) {
@@ -68,10 +69,10 @@ class Adapter(private val itemList: ArrayList<ItemList>) :
             holder.listItemRemove.visibility = View.VISIBLE
         }
 
-        val currentItem = itemList[position]
+        val currentItem = normaList[position]
         Log.d("itemcur", "$currentItem $position")
 
-        val dateFormatted = Date.formatDate(currentItem.date.toString(), "dMMyy", "dd. EE")
+        val dateFormatted = Date.formatDate(currentItem.date.toString(), "d/M/yyyy", "dd. EE")
         holder.listItemDate.text = dateFormatted
         holder.listItemNormaHours.text = currentItem.normaHours.toString()
         holder.listItemWorkingHours.text = currentItem.workingHours.toString()
@@ -80,7 +81,7 @@ class Adapter(private val itemList: ArrayList<ItemList>) :
     }
 
     override fun getItemCount(): Int {
-        return itemList.size
+        return normaList.size
     }
 
 }

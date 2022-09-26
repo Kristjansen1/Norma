@@ -1,7 +1,7 @@
-package roskar.kristjan.norma
+package roskar.kristjan.norma.model
 
-data class ItemList(
-    val date: Int,
+data class NormaList(
+    val date: String,
     val normaHours: Int,
     val workingHours: Int,
     val workplace: String
