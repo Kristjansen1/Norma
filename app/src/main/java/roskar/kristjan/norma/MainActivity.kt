@@ -198,7 +198,7 @@ class MainActivity : AppCompatActivity() {
      *  ################## */
 
     /**
-     * Add new entry to norma_rable & normaListArray: Arraylist
+     * Add new entry to norma_table & normaListArray: Arraylist
      */
 
     @SuppressLint("NotifyDataSetChanged")
