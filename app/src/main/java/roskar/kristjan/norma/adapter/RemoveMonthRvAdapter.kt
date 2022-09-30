@@ -4,34 +4,43 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import roskar.kristjan.norma.Date
+import roskar.kristjan.norma.databinding.RemoveMonthLineBinding
 import roskar.kristjan.norma.model.MonthList
-import roskar.kristjan.norma.databinding.SelectMonthLineBinding
 
-class RemoveMonthRvAdapter(private val monthList: ArrayList<MonthList>) :
-    RecyclerView.Adapter<RemoveMonthRvAdapter.ViewHolder>() {
+class RemoveMonthRvAdapter(
+    private val monthList: ArrayList<MonthList>,
+    private val monthClicked: (Int) -> Unit
+) :
+    RecyclerView.Adapter<RemoveMonthRvAdapter.MyViewHolder>() {
 
-    class ViewHolder(binding: SelectMonthLineBinding) : RecyclerView.ViewHolder(binding.root) {
-        val removeMonth = binding.remove
-        val month1 = binding.month
-        val root = binding.root
+    class MyViewHolder(binding: RemoveMonthLineBinding, clickedPosition: (Int) -> Unit) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        private val removeMonth = binding.remove
+        val month = binding.month
+
+        init {
+            removeMonth.setOnClickListener {
+                clickedPosition(adapterPosition)
+            }
+        }
+
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            SelectMonthLineBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val holder =
+            RemoveMonthLineBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(holder) {
+            monthClicked(it)
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = monthList[position]
-        var m = currentItem.month.toString()
-        var mf = Date.formatDate(m, "d/M/yyyy", "LLLL yyyy")
-        holder.month1.text = mf
-
+        val m = currentItem.month
+        val mf = Date.formatDate(m, "d/M/yyyy", "LLLL yyyy")
+        holder.month.text = mf
     }
 
     override fun getItemCount(): Int {

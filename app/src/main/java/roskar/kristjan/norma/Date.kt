@@ -22,5 +22,9 @@ object Date {
         val formatTo = DateTimeFormatter.ofPattern(formatNew)
         return dateToFormat.format(formatTo).toString()
     }
+
+    fun monthAndYear(date: String): String {
+        return formatDate(date, "d/M/yyyy", "LLLL yyyy")
+    }
 }
 

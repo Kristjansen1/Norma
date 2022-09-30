@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -26,7 +27,7 @@ import roskar.kristjan.norma.adapter.MainActivityRvAdapter
 import roskar.kristjan.norma.adapter.RemoveMonthRvAdapter
 import roskar.kristjan.norma.databinding.ActivityMainBinding
 import roskar.kristjan.norma.databinding.AddDataBinding
-import roskar.kristjan.norma.databinding.SelectMonthBinding
+import roskar.kristjan.norma.databinding.RemoveMonthBinding
 import roskar.kristjan.norma.model.MonthList
 import roskar.kristjan.norma.model.NormaList
 import roskar.kristjan.norma.room.AppDatabase
@@ -34,7 +35,9 @@ import roskar.kristjan.norma.room.Month
 import roskar.kristjan.norma.room.Norma
 import java.time.YearMonth
 
-
+/**
+ * lol777
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
@@ -43,8 +46,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appDb: AppDatabase
     private lateinit var binding: ActivityMainBinding
     var clickedPosition = 82
+    private var activeMonth = ""
 
-
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -53,7 +57,6 @@ class MainActivity : AppCompatActivity() {
 
         val addMonth = binding.addMonth
         val removeMonth = binding.removeMonth
-        val selectMonth = binding.selectMonth
 
         appDb = AppDatabase.getDatabase(this)
         recyclerView = binding.recylerView
@@ -72,11 +75,13 @@ class MainActivity : AppCompatActivity() {
 
         //itemListArray = Data.populate(appDb, Date.currentDateWithFormat("Myy"))
         normaListArray = populateNormaList("1/2023")
+        activeMonth = "1/2023"
         monthListArray = populateMonthList()
 
 
         val adapter = MainActivityRvAdapter(normaListArray)
         recyclerView.adapter = adapter
+
 
 
         /**
@@ -104,6 +109,7 @@ class MainActivity : AppCompatActivity() {
              * RecyclerView add entry to norma_table
              */
 
+            @SuppressLint("InflateParams")
             override fun onAddButtonClicked(position: Int) {
 
                 val listener = object : RecyclerView.SimpleOnItemTouchListener() {
@@ -173,24 +179,35 @@ class MainActivity : AppCompatActivity() {
          * Remove month from month_table
          */
         removeMonth.setOnClickListener {
-            val inflater: LayoutInflater = LayoutInflater.from(this)
-            val rootView = inflater.inflate(R.layout.select_month, null)
-            val monthList = SelectMonthBinding.bind(rootView).monthList
-            val selectMonthDialog: MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(
-                this,
-                R.style.roundCornerDialog
-            ).setView(rootView)
-                .setTitle("Select Month")
-                .setPositiveButton("Close") { self, _ ->
-                    lol("a")
-                    self.dismiss()
+            val inflater: LayoutInflater = LayoutInflater.from(this@MainActivity)
+            val rootView = inflater.inflate(R.layout.remove_month, null)
+            val monthListRecyclerView = RemoveMonthBinding.bind(rootView).monthList
+            val mLadapter = RemoveMonthRvAdapter(monthListArray) {
+                monthListArray.removeAt(it)
+                monthListRecyclerView.adapter?.notifyItemRemoved(it)
+                val currentMonth = Date.currentDateWithFormat("M/yyyy")
+                if (currentMonth == activeMonth) {
+                    //*TODO gggg
                 }
+            }
+            monthListRecyclerView.adapter = mLadapter
+            monthListRecyclerView.setHasFixedSize(true)
+            monthListRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+
+            val selectMonthDialog: MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(
+                this@MainActivity,
+                R.style.roundCornerDialog
+            ).setView(rootView).setTitle("Remove Month").setPositiveButton("Close") { self, _ ->
+                lol(1)
+                self.dismiss()
+            }
+
             selectMonthDialog.create()
-            monthList.setHasFixedSize(true)
-            monthList.layoutManager = LinearLayoutManager(this)
-            monthList.adapter = RemoveMonthRvAdapter(monthListArray)
             selectMonthDialog.show()
+
+
         }
+
     }
 
     /** ##################
@@ -201,6 +218,7 @@ class MainActivity : AppCompatActivity() {
      * Add new entry to norma_table & normaListArray: Arraylist
      */
 
+    @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("NotifyDataSetChanged")
     private fun addData(date: String, normaHours: Int, workingHours: Int, workplace: String) {
 
@@ -231,7 +249,7 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.IO) {
             appDb.normaDao().insert_month(monthToAdd)
             for (day1 in 1..monthLength) {
-                var d = "$day1/$fixMonth/$year"
+                val d = "$day1/$fixMonth/$year"
                 //val df = Date.formatDate(d, "d/M/yyyy", "dMMyy").toInt()
 
                 norma = Norma(null, d, 0, 0, "linija")
@@ -244,6 +262,7 @@ class MainActivity : AppCompatActivity() {
      * Read from norma_Table and add data to normaListArray: Arraylist
      */
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun populateNormaList(withMonth: String): ArrayList<NormaList> {
 
         GlobalScope.launch(Dispatchers.IO) {
@@ -274,6 +293,7 @@ class MainActivity : AppCompatActivity() {
      * Read from month_table and add data to monthListArray: ArrayList
      */
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun populateMonthList(): ArrayList<MonthList> {
         val monthListArray: ArrayList<MonthList> = arrayListOf()
         GlobalScope.launch(Dispatchers.IO) {
@@ -307,8 +327,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun lol(a: String) {
-        Log.d("clicked", a)
+    private fun lol(a: Int) {
+        Log.d("clicked", "$a")
     }
 
 }
