@@ -19,10 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import roskar.kristjan.norma.adapter.MainActivityRvAdapter
 import roskar.kristjan.norma.adapter.RemoveMonthRvAdapter
 import roskar.kristjan.norma.databinding.ActivityMainBinding
@@ -73,15 +70,13 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        //itemListArray = Data.populate(appDb, Date.currentDateWithFormat("Myy"))
-        normaListArray = populateNormaList("1/2023")
-        activeMonth = "1/2023"
+        activeMonth = Date.currentDateWithFormat("M/yyyy")
+        normaListArray = populateNormaList(activeMonth)
         monthListArray = populateMonthList()
 
 
         val adapter = MainActivityRvAdapter(normaListArray)
         recyclerView.adapter = adapter
-
 
 
         /**
@@ -179,32 +174,62 @@ class MainActivity : AppCompatActivity() {
          * Remove month from month_table
          */
         removeMonth.setOnClickListener {
+            var clearMainRv = false
             val inflater: LayoutInflater = LayoutInflater.from(this@MainActivity)
             val rootView = inflater.inflate(R.layout.remove_month, null)
             val monthListRecyclerView = RemoveMonthBinding.bind(rootView).monthList
-            val mLadapter = RemoveMonthRvAdapter(monthListArray) {
-                monthListArray.removeAt(it)
-                monthListRecyclerView.adapter?.notifyItemRemoved(it)
-                val currentMonth = Date.currentDateWithFormat("M/yyyy")
-                if (currentMonth == activeMonth) {
-                    //*TODO gggg
-                }
-            }
-            monthListRecyclerView.adapter = mLadapter
-            monthListRecyclerView.setHasFixedSize(true)
-            monthListRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+
 
             val selectMonthDialog: MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(
                 this@MainActivity,
                 R.style.roundCornerDialog
             ).setView(rootView).setTitle("Remove Month").setPositiveButton("Close") { self, _ ->
-                lol(1)
+                clearMainRv(clearMainRv)
                 self.dismiss()
-            }
+            }.setCancelable(true)
 
             selectMonthDialog.create()
             selectMonthDialog.show()
 
+            monthListRecyclerView.setHasFixedSize(true)
+            monthListRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+            val mLadapter = RemoveMonthRvAdapter(monthListArray) {
+                if (it < 100000) {
+                    removeMonth(it, monthListRecyclerView)
+                    val currentMonth = Date.currentDateWithFormat("M/yyyy")
+                    if (currentMonth == activeMonth) {
+                        clearMainRv = true
+                        activeMonth = ""
+                    }
+                } else {
+                    clearMainRv = false
+                    refreshMainRv(it)
+                }
+
+            }
+            monthListRecyclerView.adapter = mLadapter
+        }
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun refreshMainRv(it: Int) {
+        val m = monthListArray[it - 100000]
+        val month = Date.monthAndYear(m.month)
+        normaListArray.clear()
+        populateNormaList(month)
+    }
+
+    private fun removeMonth(it: Int, rv: RecyclerView) {
+        val m = monthListArray[it]
+        val monthToRemove = Date.monthAndYear(m.month)
+        val match = "%$monthToRemove%"
+
+        monthListArray.removeAt(it)
+        rv.adapter?.notifyItemRemoved(it)
+        GlobalScope.launch(Dispatchers.IO) {
+            appDb.normaDao().deleteByMonth(match)
+            appDb.normaDao().deleteByMonth1(m.month)
 
         }
 
@@ -262,6 +287,7 @@ class MainActivity : AppCompatActivity() {
      * Read from norma_Table and add data to normaListArray: Arraylist
      */
 
+    @SuppressLint("NotifyDataSetChanged")
     @OptIn(DelicateCoroutinesApi::class)
     private fun populateNormaList(withMonth: String): ArrayList<NormaList> {
 
@@ -285,8 +311,13 @@ class MainActivity : AppCompatActivity() {
                 Log.d("nevemkej", it.norma_date.toString())
                 normaListArray.add((normaList))
             }
+            withContext(Dispatchers.Main) {
+                recyclerView.adapter!!.notifyDataSetChanged()
+            }
         }
         return normaListArray
+
+
     }
 
     /**
@@ -326,9 +357,12 @@ class MainActivity : AppCompatActivity() {
         ).show()
     }
 
-
-    private fun lol(a: Int) {
-        Log.d("clicked", "$a")
+    @SuppressLint("NotifyDataSetChanged")
+    private fun clearMainRv(clear: Boolean) {
+        if (clear) {
+            normaListArray.clear()
+            recyclerView.adapter!!.notifyDataSetChanged()
+        }
     }
 
 }

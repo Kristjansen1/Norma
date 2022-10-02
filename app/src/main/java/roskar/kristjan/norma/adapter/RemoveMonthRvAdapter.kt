@@ -2,18 +2,22 @@ package roskar.kristjan.norma.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import roskar.kristjan.norma.Date
 import roskar.kristjan.norma.databinding.RemoveMonthLineBinding
 import roskar.kristjan.norma.model.MonthList
 
 class RemoveMonthRvAdapter(
     private val monthList: ArrayList<MonthList>,
-    private val monthClicked: (Int) -> Unit
+    private val monthClicked: (Int) -> Unit,
 ) :
     RecyclerView.Adapter<RemoveMonthRvAdapter.MyViewHolder>() {
-
-    class MyViewHolder(binding: RemoveMonthLineBinding, clickedPosition: (Int) -> Unit) :
+    inner class MyViewHolder(
+        binding: RemoveMonthLineBinding,
+        clickedPosition: (Int) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
         private val removeMonth = binding.remove
@@ -22,6 +26,9 @@ class RemoveMonthRvAdapter(
         init {
             removeMonth.setOnClickListener {
                 clickedPosition(adapterPosition)
+            }
+            month.setOnClickListener {
+                clickedPosition(adapterPosition + 100000)
             }
         }
 
