@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import roskar.kristjan.norma.Date
 import roskar.kristjan.norma.model.NormaList
 import roskar.kristjan.norma.databinding.ListItemBinding
+import roskar.kristjan.norma.room.Norma
 
 class MainActivityRvAdapter(private val normaList: ArrayList<NormaList>) :
     RecyclerView.Adapter<MainActivityRvAdapter.MyViewHolder>() {
@@ -24,6 +25,7 @@ class MainActivityRvAdapter(private val normaList: ArrayList<NormaList>) :
         val listItemWorkplace = binding.listItemWorkplace
         val listItemAdd = binding.listItemAdd
         val listItemRemove = binding.listItemRemove
+        val root = binding.listItemLayout
         init {
             binding.root.setOnClickListener {
                 if (listItemAdd.isVisible) {

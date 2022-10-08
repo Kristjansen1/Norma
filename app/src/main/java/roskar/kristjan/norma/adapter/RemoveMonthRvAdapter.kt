@@ -1,8 +1,8 @@
 package roskar.kristjan.norma.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import roskar.kristjan.norma.Date
@@ -11,10 +11,11 @@ import roskar.kristjan.norma.model.MonthList
 
 class RemoveMonthRvAdapter(
     private val monthList: ArrayList<MonthList>,
-    private val monthClicked: (Int) -> Unit,
+    private val monthClicked: (Int) -> Unit
+
 ) :
     RecyclerView.Adapter<RemoveMonthRvAdapter.MyViewHolder>() {
-    inner class MyViewHolder(
+    class MyViewHolder(
         binding: RemoveMonthLineBinding,
         clickedPosition: (Int) -> Unit
     ) :

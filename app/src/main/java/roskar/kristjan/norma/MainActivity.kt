@@ -3,18 +3,14 @@ package roskar.kristjan.norma
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.widget.DatePicker
-import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,8 +19,8 @@ import kotlinx.coroutines.*
 import roskar.kristjan.norma.adapter.MainActivityRvAdapter
 import roskar.kristjan.norma.adapter.RemoveMonthRvAdapter
 import roskar.kristjan.norma.databinding.ActivityMainBinding
-import roskar.kristjan.norma.databinding.AddDataBinding
 import roskar.kristjan.norma.databinding.RemoveMonthBinding
+import roskar.kristjan.norma.dialogFragments.NormaListAddDialog
 import roskar.kristjan.norma.model.MonthList
 import roskar.kristjan.norma.model.NormaList
 import roskar.kristjan.norma.room.AppDatabase
@@ -35,7 +31,8 @@ import java.time.YearMonth
 /**
  * lol777
  */
-class MainActivity : AppCompatActivity() {
+@OptIn(DelicateCoroutinesApi::class)
+class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterface {
 
     private lateinit var recyclerView: RecyclerView
     private var normaListArray: ArrayList<NormaList> = arrayListOf()
@@ -107,43 +104,9 @@ class MainActivity : AppCompatActivity() {
             @SuppressLint("InflateParams")
             override fun onAddButtonClicked(position: Int) {
 
-                val listener = object : RecyclerView.SimpleOnItemTouchListener() {
-                    override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                        return true
-                    }
-                }
+                val dialog: DialogFragment = NormaListAddDialog(position)
+                dialog.show(supportFragmentManager, "lol")
 
-                recyclerView.addOnItemTouchListener(listener)
-                val inflater: LayoutInflater = LayoutInflater.from(this@MainActivity)
-                val view = inflater.inflate(R.layout.add_data, null)
-
-                val buttonDismiss = AddDataBinding.bind(view).popupDismiss
-                val buttonAdd = AddDataBinding.bind(view).popupAdd
-                val popupWindow = PopupWindow(
-                    view,
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT
-                )
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    popupWindow.isTouchModal = false
-                }
-                popupWindow.isOutsideTouchable = false
-                popupWindow.isFocusable = true
-                popupWindow.showAtLocation(
-                    binding.rootLayout,
-                    Gravity.CENTER,
-                    0,
-                    0
-                )
-                popupWindow.setOnDismissListener {
-                    recyclerView.removeOnItemTouchListener(listener)
-                }
-                buttonDismiss.setOnClickListener {
-                    popupWindow.dismiss()
-                }
-                buttonAdd.setOnClickListener {
-
-                }
             }
 
             /**
@@ -181,12 +144,11 @@ class MainActivity : AppCompatActivity() {
 
 
             val selectMonthDialog: MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(
-                this@MainActivity,
-                R.style.roundCornerDialog
+                this@MainActivity
             ).setView(rootView).setTitle("Remove Month").setPositiveButton("Close") { self, _ ->
                 clearMainRv(clearMainRv)
                 self.dismiss()
-            }.setCancelable(true)
+            }
 
             selectMonthDialog.create()
             selectMonthDialog.show()
@@ -215,21 +177,22 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun refreshMainRv(it: Int) {
         val m = monthListArray[it - 100000]
-        val month = Date.monthAndYear(m.month)
+        val month = Date.monthAndYearNumber(m.month)
         normaListArray.clear()
         populateNormaList(month)
+
     }
 
     private fun removeMonth(it: Int, rv: RecyclerView) {
         val m = monthListArray[it]
-        val monthToRemove = Date.monthAndYear(m.month)
+        val monthToRemove = Date.monthAndYearWord(m.month)
         val match = "%$monthToRemove%"
 
         monthListArray.removeAt(it)
         rv.adapter?.notifyItemRemoved(it)
         GlobalScope.launch(Dispatchers.IO) {
-            appDb.normaDao().deleteByMonth(match)
-            appDb.normaDao().deleteByMonth1(m.month)
+            appDb.normaDao().deleteByMonthFromNormaTable(match)
+            appDb.normaDao().deleteByMonthFromMonthTable(m.month)
 
         }
 
@@ -245,13 +208,13 @@ class MainActivity : AppCompatActivity() {
 
     @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("NotifyDataSetChanged")
-    private fun addData(date: String, normaHours: Int, workingHours: Int, workplace: String) {
+    private fun addData(date: String, normaHours: Double, workingHours: Double, workplace: String) {
 
         val norma = Norma(null, date, normaHours, workingHours, workplace)
         GlobalScope.launch(Dispatchers.IO) {
             appDb.normaDao().insert_norma(norma)
         }
-        normaListArray.add(NormaList(date, normaHours, workingHours, workplace))
+        //normaListArray.add(NormaList(date, normaHours, workingHours, workplace))
         recyclerView.adapter!!.notifyDataSetChanged()
     }
 
@@ -277,7 +240,7 @@ class MainActivity : AppCompatActivity() {
                 val d = "$day1/$fixMonth/$year"
                 //val df = Date.formatDate(d, "d/M/yyyy", "dMMyy").toInt()
 
-                norma = Norma(null, d, 0, 0, "linija")
+                norma = Norma(null, d, 0.0, 0.0, "linija")
                 appDb.normaDao().insert_norma(norma)
             }
         }
@@ -292,12 +255,10 @@ class MainActivity : AppCompatActivity() {
     private fun populateNormaList(withMonth: String): ArrayList<NormaList> {
 
         GlobalScope.launch(Dispatchers.IO) {
-
             //Prikaze vnose za tekoci mesec...
 
             val match = "%$withMonth%"
             val dbData: List<Norma> = appDb.normaDao().findByMonth(match)
-            Log.d("findbymonth", match)
             var normaList: NormaList
             dbData.forEach {
 
@@ -308,7 +269,6 @@ class MainActivity : AppCompatActivity() {
                     workplace = it.workplace!!
                 )
 
-                Log.d("nevemkej", it.norma_date.toString())
                 normaListArray.add((normaList))
             }
             withContext(Dispatchers.Main) {
@@ -362,6 +322,19 @@ class MainActivity : AppCompatActivity() {
         if (clear) {
             normaListArray.clear()
             recyclerView.adapter!!.notifyDataSetChanged()
+        }
+    }
+
+    override fun values(normaUre: Double, delUre: Double, delMesto: String, position: Int) {
+        with(normaListArray[position]) {
+            this.normaHours = normaUre
+            this.workingHours = delUre
+            this.workplace = delMesto
+            //recyclerView.adapter!!.notifyItemChanged(position)
+            recyclerView.adapter!!.notifyDataSetChanged()
+            GlobalScope.launch(Dispatchers.IO) {
+                appDb.normaDao().update(normaListArray[position].date, normaUre, delUre, delMesto)
+            }
         }
     }
 

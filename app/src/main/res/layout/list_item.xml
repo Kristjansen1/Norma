@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_weight="0">
@@ -25,7 +26,7 @@
             android:layout_weight="1"
             android:text="TextView"
             android:textAlignment="center"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/listItemNormaHours"
@@ -44,7 +45,8 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:text="TextView"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/listItemWorkplace"
@@ -53,7 +55,8 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:text="TextView"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textSize="16sp" />
 
         <ImageButton
             android:id="@+id/listItemAdd"
@@ -61,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:visibility="invisible"
-            app:srcCompat="@android:drawable/ic_menu_add" />
+            app:srcCompat="@android:drawable/ic_menu_edit" />
 
         <ImageButton
             android:id="@+id/listItemRemove"
