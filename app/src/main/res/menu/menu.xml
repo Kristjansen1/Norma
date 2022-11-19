@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/outline_home_black_24"
+        android:title="Home" />
+    <item
+        android:id="@+id/addMonth"
+        android:icon="@drawable/outline_add_black_24"
+        android:title="Add Month" />
+    <item
+        android:id="@+id/removeMonth"
+        android:icon="@drawable/outline_calendar_month_black_24"
+        android:title="Remove Month" />
+    <item
+        android:id="@+id/info"
+        android:icon="@drawable/outline_functions_black_24"
+        android:title="info" />
+</menu>

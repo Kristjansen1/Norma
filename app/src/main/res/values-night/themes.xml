@@ -1,17 +1,56 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Theme.Norma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+    <!-- Customize your theme here. -->
+    <!--    <style name="Theme.Norma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+            &lt;!&ndash; Primary brand color. &ndash;&gt;
+
+            <item name="android:colorBackground">@color/primaryDarkColor</item>
+            <item name="colorOnBackground">@color/primaryTextColor</item>
+
+
+            <item name="colorPrimary">@color/primaryColor</item>
+            <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+            <item name="colorOnPrimary">@color/primaryTextColor</item>
+            &lt;!&ndash; Secondary brand color. &ndash;&gt;
+
+            <item name="colorSecondary">@color/secondaryColor</item>
+            <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+            <item name="colorOnSecondary">@color/secondaryTextColor</item>
+            &lt;!&ndash; Status bar color. &ndash;&gt;
+            <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+            &lt;!&ndash; Customize your theme here. &ndash;&gt;
+        </style>-->
+
+
+    <style name="circleColor" parent="Theme.Norma">
+
     </style>
 
-    <!--<style name="roundCornerDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="shapeAppearanceOverlay">
-            @style/shape
-        </item>
+    <style name="NormaDialog" parent="@style/Theme.MaterialComponents.DayNight.Dialog">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowTitleStyle">@style/NormaDialogWindowTitle</item>
     </style>
 
-    <style name="shape">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">20dp</item>
-    </style>-->
+    <style name="NormaDialogWindowTitle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+
 </resources>
 

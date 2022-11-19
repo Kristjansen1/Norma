@@ -74,11 +74,21 @@ class MainActivityRvAdapter(private val normaList: ArrayList<NormaList>) :
         val currentItem = normaList[position]
         Log.d("itemcur", "$currentItem $position")
 
-        val dateFormatted = Date.formatDate(currentItem.date.toString(), "d/M/yyyy", "dd. EE")
+        val day = Date.formatDate(currentItem.date.toString(), "d/M/yyyy", "dd")
+        val month = Date.formatDate(currentItem.date.toString(), "d/M/yyyy", "EE")
+        val dateFormatted = day + "\n" + month
         holder.listItemDate.text = dateFormatted
-        holder.listItemNormaHours.text = currentItem.normaHours.toString()
-        holder.listItemWorkingHours.text = currentItem.workingHours.toString()
-        holder.listItemWorkplace.text = currentItem.workplace
+
+        if ((currentItem.normaHours == 0.0) && (currentItem.workingHours == 0.0)) {
+            holder.listItemNormaHours.text = ""
+            holder.listItemWorkingHours.text = ""
+            holder.listItemWorkplace.text = ""
+        } else {
+            holder.listItemNormaHours.text = currentItem.normaHours.toString()
+            holder.listItemWorkingHours.text = currentItem.workingHours.toString()
+            holder.listItemWorkplace.text = currentItem.workplace
+        }
+
         holder.setIsRecyclable(false)
     }
 
