@@ -35,8 +35,7 @@ import java.time.YearMonth
  * lol777
  */
 @OptIn(DelicateCoroutinesApi::class)
-class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterface,
-    NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterface {
 
     private lateinit var recyclerView: RecyclerView
     private var normaListArray: ArrayList<NormaList> = arrayListOf()
@@ -79,16 +78,13 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
         recyclerView.adapter = adapter
 
         val navView = binding.navView
-        val menu = navView.menu
         navView.setOnItemSelectedListener {
-            Log.d("navview", R.id.addMonth.toString())
-            if (it.itemId == R.id.addMonth) {
-                Log.d("navview", R.id.addMonth.toString())
-            }
+
             when (it.itemId) {
                 R.id.addMonth -> pickDate()
                 R.id.removeMonth -> navViewRemoveMonth()
             }
+
             return@setOnItemSelectedListener true
         }
 
@@ -366,21 +362,6 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
             }
         }
     }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.addMonth -> {
-                pickDate()
-            }
-            R.id.removeMonth -> {
-                navViewRemoveMonth()
-            }
-            R.id.info -> {
-
-            }
-        }
-        return true
-    }
-
 }
+
 
