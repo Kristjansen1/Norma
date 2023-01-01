@@ -32,9 +32,7 @@ import roskar.kristjan.norma.room.Month
 import roskar.kristjan.norma.room.Norma
 import java.time.YearMonth
 
-/**
- * lol777
- */
+
 @OptIn(DelicateCoroutinesApi::class)
 class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterface,
     BottomSheetDialogF.BottomSheetDialogMenuInterface {
