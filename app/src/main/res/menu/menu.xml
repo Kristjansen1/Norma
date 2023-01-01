@@ -12,7 +12,7 @@
     <item
         android:id="@+id/removeMonth"
         android:icon="@drawable/outline_menu_open_black_24"
-        android:title="Remove Month" />
+        android:title="Menu" />
     <item
         android:id="@+id/info"
         android:icon="@drawable/outline_functions_black_24"
