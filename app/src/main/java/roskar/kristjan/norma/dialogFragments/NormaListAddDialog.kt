@@ -17,7 +17,7 @@ import roskar.kristjan.norma.databinding.AddDataBinding
 import roskar.kristjan.norma.model.NormaList
 import kotlin.properties.Delegates
 
-class NormaListAddDialog(val position: Int) : DialogFragment() {
+class NormaListAddDialog(val position: Int) : BottomSheetDialogFragment() {
     private var normaUreValue by Delegates.notNull<Double>()
     private var delUreValue by Delegates.notNull<Double>()
     private lateinit var listener: NormaListAddInterface
@@ -29,7 +29,6 @@ class NormaListAddDialog(val position: Int) : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        dialog?.setTitle("Add Entry")
         val rootView = inflater.inflate(R.layout.add_data, null)
 
         val addBtn = AddDataBinding.bind(rootView).normaDialogAdd
@@ -44,7 +43,7 @@ class NormaListAddDialog(val position: Int) : DialogFragment() {
         addBtn.setOnClickListener {
             val delMestoRGroup = AddDataBinding.bind(rootView).delMesto.checkedRadioButtonId
             val item = NormaList("", 0.0, 0.0, "")
-            if ((normaUre.text.isNotEmpty()) && (delUre.text.isNotEmpty())) {
+            if ((normaUre.text?.isNotEmpty() == true) && (delUre.text?.isNotEmpty() == true)) {
 
                 item.normaHours = normaUre.text.toString().toDoubleOrNull()!!
                 item.workingHours = delUre.text.toString().toDoubleOrNull()!!
@@ -74,37 +73,6 @@ class NormaListAddDialog(val position: Int) : DialogFragment() {
     /**
      * STACKOVERFLOW FTW
      */
-/*    override fun onResume() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val windowMetrics =
-                requireActivity().windowManager.currentWindowMetrics
-            val insets: Insets = windowMetrics.windowInsets
-                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
-            val width = windowMetrics.bounds.width() - insets.left -
-                    insets.right
-            val height = windowMetrics.bounds.height() - insets.top -
-                    insets.bottom
-            val window = dialog!!.window
-            if (window != null) {
-                window.setLayout((width * 0.50).toInt(), (height *
-                        0.70).toInt()) // for width and height to be 90 % of screen
-                window.setGravity(Gravity.CENTER)
-            }
-            super.onResume()
-        } else {
-            val window = dialog!!.window
-            val size = Point()
-            // Store dimensions of the screen in `size`
-            val display = window!!.windowManager.defaultDisplay
-            display.getSize(size)
-            // Set the width of the dialog proportional to 90% of the screen width
-            window.setLayout((size.x * 0.60).toInt(),
-                ViewGroup.LayoutParams.WRAP_CONTENT)
-            window.setGravity(Gravity.CENTER)
-            // Call super onResume after sizing
-            super.onResume()
-        }
-    }*/
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

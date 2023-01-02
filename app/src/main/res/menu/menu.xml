@@ -2,15 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
-        android:icon="@drawable/outline_home_black_24"
-        android:title="Home" />
-    <item
-        android:id="@+id/addMonth"
-        android:icon="@drawable/outline_list_black_24"
-        android:title="Add Month" />
-    <item
-        android:id="@+id/removeMonth"
+        android:id="@+id/menu"
         android:icon="@drawable/outline_menu_open_black_24"
         android:title="Menu" />
     <item

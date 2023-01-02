@@ -2,106 +2,58 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:colorBackground"
 
-    android:padding="24dp"
-    android:windowSoftInputMode="adjustResize">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/ter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Norma ure:"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/popupNormaUre"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Delovne ure:"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/popupDelUre"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ter" />
-
-    <EditText
-        android:id="@+id/popupNormaUre"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:editable="false"
-        android:ems="10"
-        android:inputType="number|numberDecimal"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toEndOf="@+id/ter"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/popupDelUre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:editable="false"
-        android:ems="10"
-        android:inputType="number|numberDecimal"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/popupNormaUre" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/popupNormaUre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Norma Ure"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/delMesto"
-        app:layout_constraintTop_toBottomOf="@+id/delMesto">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
-        <TextView
-            android:id="@+id/normaDialogAdd"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/popupDelUre"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="ADD"
-            android:textAlignment="center"
-            android:textColor="@color/design_default_color_secondary"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/normaDialogCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="CANCEL"
-            android:textAlignment="center"
-            android:textColor="@color/design_default_color_secondary"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:hint="Delovne Ure"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <RadioGroup
         android:id="@+id/delMesto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="@+id/popupDelUre"
-        app:layout_constraintTop_toBottomOf="@+id/popupDelUre">
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
         <RadioButton
             android:id="@+id/linija"
@@ -116,5 +68,24 @@
             android:layout_height="wrap_content"
             android:text="Hala" />
     </RadioGroup>
+
+    <ImageButton
+        android:id="@+id/normaDialogAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/normaDialogCancel"
+        app:layout_constraintTop_toBottomOf="@+id/delMesto"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+    <ImageButton
+        android:id="@+id/normaDialogCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/normaDialogAdd"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

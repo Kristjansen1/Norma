@@ -14,8 +14,5 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="NormaDialog" parent="@style/Theme.Material3.Light.Dialog">
-        <item name="android:windowNoTitle">false</item>
-    </style>
 
 </resources>

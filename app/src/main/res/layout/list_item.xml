@@ -26,9 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:background="@drawable/rounded_textview"
             android:textAlignment="center"
-            android:textColor="?attr/colorPrimaryVariant"
             android:textSize="14sp"
             android:textStyle="bold" />
 
