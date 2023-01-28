@@ -13,7 +13,7 @@ import roskar.kristjan.norma.adapter.MonthSelectRemoveRvAdapter
 import roskar.kristjan.norma.databinding.RemoveMonthBinding
 import roskar.kristjan.norma.model.MonthList
 
-class MonthSelectRemoveDialog(private val monthListArray: ArrayList<MonthList>, context: Context) :
+class MonthSelectRemoveDialog(private val monthListArray: ArrayList<MonthList>) :
     BottomSheetDialogFragment() {
 
     private lateinit var listener: MonthSelectRemoveInterface
@@ -56,7 +56,6 @@ class MonthSelectRemoveDialog(private val monthListArray: ArrayList<MonthList>, 
 
 
     interface MonthSelectRemoveInterface {
-        //fun monthSelectRemoveClickedPos(position: Int)
         fun removeMonth(position: Int, rv: RecyclerView)
         fun checkClearMainRv(position: Int)
         fun refreshMainRv(position: Int)

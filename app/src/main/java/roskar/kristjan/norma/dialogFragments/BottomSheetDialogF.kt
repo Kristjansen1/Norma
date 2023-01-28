@@ -1,5 +1,6 @@
 package roskar.kristjan.norma.dialogFragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ class BottomSheetDialogF : BottomSheetDialogFragment() {
 
     private lateinit var listener: BottomSheetDialogMenuInterface
 
+    @SuppressLint("InflateParams")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

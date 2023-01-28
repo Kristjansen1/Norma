@@ -22,6 +22,7 @@ import roskar.kristjan.norma.adapter.MonthSelectRemoveRvAdapter
 import roskar.kristjan.norma.databinding.ActivityMainBinding
 import roskar.kristjan.norma.databinding.RemoveMonthBinding
 import roskar.kristjan.norma.dialogFragments.BottomSheetDialogF
+import roskar.kristjan.norma.dialogFragments.BottomSheetDialogFSum
 import roskar.kristjan.norma.dialogFragments.MonthSelectRemoveDialog
 import roskar.kristjan.norma.dialogFragments.NormaListAddDialog
 import roskar.kristjan.norma.model.MonthList
@@ -83,10 +84,12 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
         navView.setOnItemSelectedListener {
 
             when (it.itemId) {
-                //R.id.addMonth -> pickDate()
-                //R.id.removeMonth -> navViewRemoveMonth()
                 R.id.menu -> {
                     val dialog: BottomSheetDialogFragment = BottomSheetDialogF()
+                    dialog.show(supportFragmentManager, "lol")
+                }
+                R.id.sum -> {
+                    val dialog: BottomSheetDialogFragment = BottomSheetDialogFSum(normaListArray)
                     dialog.show(supportFragmentManager, "lol")
                 }
             }
@@ -121,10 +124,22 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
 
             @SuppressLint("InflateParams")
             override fun onAddButtonClicked(position: Int) {
+                if (!normaListArray[position].workingHours.isNaN()) {
+                    val n = normaListArray[position].normaHours
+                    val wh = normaListArray[position].workingHours
+                    val wp = normaListArray[position].workplace
+                    val dialog: BottomSheetDialogFragment = NormaListAddDialog(position, n, wh, wp)
+                    dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BootomSheet)
+                    dialog.show(supportFragmentManager, "lol")
+                } else {
+                    val n = 0.0
+                    val wh = 0.0
+                    val wp = "Linija"
+                    val dialog: BottomSheetDialogFragment = NormaListAddDialog(position, n, wh, wp)
+                    dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BootomSheet)
+                    dialog.show(supportFragmentManager, "lol")
+                }
 
-                val dialog: BottomSheetDialogFragment = NormaListAddDialog(position)
-                dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BootomSheet)
-                dialog.show(supportFragmentManager, "lol")
 
             }
 
@@ -133,11 +148,9 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
              */
 
             override fun onRemoveButtonClicked(position: Int) {
-                Toast.makeText(
-                    this@MainActivity,
-                    "You Clicked remove $position",
-                    Toast.LENGTH_SHORT
-                ).show()
+
+                normaListUpdateValue(NormaList("", 0.0, 0.0, "Linija"), position)
+
             }
         })
 
@@ -289,7 +302,7 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
      * Remove month from month_table
      */
     override fun navViewRemoveMonth() {
-        val dialog: BottomSheetDialogFragment = MonthSelectRemoveDialog(monthListArray, this)
+        val dialog: BottomSheetDialogFragment = MonthSelectRemoveDialog(monthListArray)
         dialog.setStyle(
             DialogFragment.STYLE_NORMAL,
             com.google.android.material.R.style.Theme_Material3_Dark_BottomSheetDialog

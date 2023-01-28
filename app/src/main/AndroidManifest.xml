@@ -16,6 +16,7 @@
         <activity
             android:windowSoftInputMode="adjustNothing"
             android:name=".MainActivity"
+            android:screenOrientation="sensorPortrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

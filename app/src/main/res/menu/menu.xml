@@ -3,10 +3,8 @@
 
     <item
         android:id="@+id/menu"
-        android:icon="@drawable/outline_menu_open_black_24"
-        android:title="Menu" />
+        android:icon="@drawable/outline_menu_open_black_24" />
     <item
-        android:id="@+id/info"
-        android:icon="@drawable/outline_functions_black_24"
-        android:title="info" />
+        android:id="@+id/sum"
+        android:icon="@drawable/outline_functions_black_24" />
 </menu>
