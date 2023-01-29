@@ -129,14 +129,14 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
                     val wh = normaListArray[position].workingHours
                     val wp = normaListArray[position].workplace
                     val dialog: BottomSheetDialogFragment = NormaListAddDialog(position, n, wh, wp)
-                    dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BootomSheet)
+                    dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BottomSheet)
                     dialog.show(supportFragmentManager, "lol")
                 } else {
                     val n = 0.0
                     val wh = 0.0
                     val wp = "Linija"
                     val dialog: BottomSheetDialogFragment = NormaListAddDialog(position, n, wh, wp)
-                    dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BootomSheet)
+                    dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BottomSheet)
                     dialog.show(supportFragmentManager, "lol")
                 }
 
