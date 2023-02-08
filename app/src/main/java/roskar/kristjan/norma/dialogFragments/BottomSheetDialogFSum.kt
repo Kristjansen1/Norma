@@ -23,16 +23,32 @@ class BottomSheetDialogFSum(val norma: ArrayList<NormaList>) : BottomSheetDialog
         val rootview = inflater.inflate(R.layout.bottom_sheet_sum, null)
         val normaSumTxtView = BottomSheetSumBinding.bind(rootview).normaSum
         val whSumTxtView = BottomSheetSumBinding.bind(rootview).whsum
+        val preProcTxtView = BottomSheetSumBinding.bind(rootview).presegProcent
+        val presUreTxtView = BottomSheetSumBinding.bind(rootview).presegUre
 
         var sumNh = 0.0
         var sumWh = 0.0
+        var nHtotal = 0
         for (x in norma) {
-            sumNh += x.normaHours
-            sumWh += x.workingHours
-        }
+            if (x.normaHours > 0.0) {
+                sumNh += x.normaHours
+                sumWh += x.workingHours
+                nHtotal++
+            }
 
-        normaSumTxtView.text = sumNh.toString()
+        }
+        val nhMax = nHtotal * 7.3
+        val diff = sumNh - nhMax
+        val r = String.format("%.2f", sumNh) + " / $nhMax"
+        normaSumTxtView.text = r
         whSumTxtView.text = sumWh.toString()
+        presUreTxtView.text = String.format("%.2f", (diff)) + " h"
+
+        val procenti = (diff / nhMax) * 100
+
+        preProcTxtView.text = String.format("%.2f", procenti) + " %"
+
+
         return rootview
     }
 }

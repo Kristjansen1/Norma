@@ -22,7 +22,7 @@
             android:id="@+id/popupNormaUre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Norma Ure"
+            android:hint="Productivity"
             android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,7 +41,7 @@
             android:id="@+id/popupDelUre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Delovne Ure"
+            android:hint="Work hours"
             android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
