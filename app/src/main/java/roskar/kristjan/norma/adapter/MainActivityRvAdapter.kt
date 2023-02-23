@@ -61,6 +61,7 @@ class MainActivityRvAdapter(private val normaList: ArrayList<NormaList>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        Log.d("blabla","nekeneke")
         return MyViewHolder(binding, mListener)
     }
 

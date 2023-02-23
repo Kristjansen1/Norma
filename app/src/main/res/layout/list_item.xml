@@ -9,11 +9,12 @@
     android:textAlignment="center">
 
     <LinearLayout
+        android:weightSum="100"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="0dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,11 +23,13 @@
 
         <TextView
             android:id="@+id/listItemDate"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_weight="10"
+            android:autoSizeMaxTextSize="16sp"
+            android:gravity="center_horizontal"
+            android:text="12 pon"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -35,10 +38,12 @@
             android:layout_width="0dp"
 
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
+            android:layout_gravity="center"
+
+            android:layout_weight="25"
+            android:autoSizeMaxTextSize="20sp"
+            android:gravity="center_horizontal"
             android:text="TextView"
-            android:textAlignment="center"
             android:textSize="14sp" />
 
         <TextView
@@ -46,10 +51,12 @@
             android:layout_width="0dp"
 
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
+            android:layout_gravity="center"
+
+            android:layout_weight="25"
+            android:autoSizeMaxTextSize="16sp"
+            android:gravity="center_horizontal"
             android:text="TextView"
-            android:textAlignment="center"
             android:textSize="14sp" />
 
         <TextView
@@ -57,26 +64,30 @@
             android:layout_width="0dp"
 
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
+            android:layout_gravity="center"
+
+            android:layout_weight="25"
+            android:autoSizeMaxTextSize="16sp"
+            android:gravity="center_horizontal"
             android:text="TextView"
-            android:textAlignment="center"
             android:textSize="14sp" />
 
         <ImageButton
             android:id="@+id/listItemAdd"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="8"
             android:background="@android:color/transparent"
             android:visibility="invisible"
             app:srcCompat="@android:drawable/ic_menu_edit" />
 
         <ImageButton
             android:id="@+id/listItemRemove"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="7"
             android:background="@android:color/transparent"
             android:visibility="invisible"
             app:srcCompat="@android:drawable/ic_menu_delete" />
