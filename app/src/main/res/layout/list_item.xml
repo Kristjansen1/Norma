@@ -26,12 +26,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="10"
-            android:autoSizeMaxTextSize="16sp"
-            android:gravity="center_horizontal|center_vertical"
+            android:layout_weight="25"
+            android:layout_marginStart="15dp"
+            android:gravity="center_vertical"
             android:text="12 pon"
             android:textSize="14sp"
-            android:layout_marginLeft="5dp"
             android:textStyle="bold" />
 
         <TextView
@@ -41,8 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
 
-            android:layout_weight="25"
-            android:autoSizeMaxTextSize="20sp"
+            android:layout_weight="21"
             android:gravity="center_horizontal|center_vertical"
             android:text="TextView"
             android:textSize="14sp" />
@@ -54,8 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
 
-            android:layout_weight="25"
-            android:autoSizeMaxTextSize="16sp"
+            android:layout_weight="21"
             android:gravity="center_horizontal|center_vertical"
             android:text="TextView"
             android:textSize="14sp" />
@@ -67,8 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
 
-            android:layout_weight="25"
-            android:autoSizeMaxTextSize="16sp"
+            android:layout_weight="21"
             android:gravity="center_horizontal|center_vertical"
             android:text="TextView"
             android:textSize="14sp" />
@@ -78,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="8"
+            android:layout_weight="6"
             android:background="@android:color/transparent"
             android:visibility="invisible"
             app:srcCompat="@android:drawable/ic_menu_edit" />
@@ -88,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="7"
+            android:layout_weight="6"
             android:background="@android:color/transparent"
             android:visibility="invisible"
             app:srcCompat="@android:drawable/ic_menu_delete" />

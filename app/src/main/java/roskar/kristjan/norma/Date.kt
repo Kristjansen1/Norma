@@ -23,8 +23,8 @@ object Date {
         return dateToFormat.format(formatTo).toString()
     }
 
-    fun monthAndYearWord(date: String): String {
-        return formatDate(date, "d/M/yyyy", "LLLL yyyy")
+    fun monthAndYear(date: String): String {
+        return formatDate(date, "d/M/yyyy", "MMM/yyyy")
     }
 
     fun monthAndYearNumber(date: String): String {

@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
         activeMonth = Date.currentDateWithFormat("M/yyyy")
         normaListArray = populateNormaList(activeMonth)
         monthListArray = populateMonthList()
-        supportActionBar?.title = activeMonth
+        supportActionBar?.title = Date.currentDateWithFormat("MMM/yyyy")
 
 
         val adapter = MainActivityRvAdapter(normaListArray)
@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
         activeMonth = Date.monthAndYearNumber(m.month)
         normaListArray.clear()
         populateNormaList(activeMonth)
-        supportActionBar?.title = activeMonth
+        supportActionBar?.title = Date.monthAndYear(m.month)
 
 
     }

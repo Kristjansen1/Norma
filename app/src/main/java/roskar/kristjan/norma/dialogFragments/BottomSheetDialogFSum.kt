@@ -37,7 +37,8 @@ class BottomSheetDialogFSum(val norma: ArrayList<NormaList>) : BottomSheetDialog
             }
 
         }
-        val nhMax = nHtotal * 7.3
+        //val nhMax = nHtotal * 7.3
+        val nhMax = sumWh * 0.9125
         val diff = sumNh - nhMax
         val r = String.format("%.2f", sumNh) + " / $nhMax"
         normaSumTxtView.text = r
@@ -45,6 +46,7 @@ class BottomSheetDialogFSum(val norma: ArrayList<NormaList>) : BottomSheetDialog
         presUreTxtView.text = String.format("%.2f", (diff)) + " h"
 
         val procenti = (diff / nhMax) * 100
+
 
         preProcTxtView.text = String.format("%.2f", procenti) + " %"
 
