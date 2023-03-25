@@ -8,6 +8,7 @@ plugins {
 
 android {
     compileSdk 33
+    compileSdkPreview = "UpsideDownCake"
 
     defaultConfig {
         applicationId "roskar.kristjan.norma"

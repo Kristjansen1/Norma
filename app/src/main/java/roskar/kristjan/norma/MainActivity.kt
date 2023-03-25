@@ -70,7 +70,6 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
                    )
                )*/
         }
-
         activeMonth = Date.currentDateWithFormat("M/yyyy")
         normaListArray = populateNormaList(activeMonth)
         monthListArray = populateMonthList()
