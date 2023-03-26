@@ -29,6 +29,7 @@
 
     </style>
 
+
     <style name="DialogFragment" parent="Theme.Norma">
         //
         <item name="android:windowNoTitle">false</item>
