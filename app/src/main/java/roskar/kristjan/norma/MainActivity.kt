@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -128,14 +128,14 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
                     val wh = normaListArray[position].workingHours
                     val wp = normaListArray[position].workplace
                     val dialog: BottomSheetDialogFragment = NormaListAddDialog(position, n, wh, wp)
-                    dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BottomSheet)
+                    //dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BottomSheet)
                     dialog.show(supportFragmentManager, "lol")
                 } else {
                     val n = 0.0
                     val wh = 0.0
                     val wp = "Linija"
                     val dialog: BottomSheetDialogFragment = NormaListAddDialog(position, n, wh, wp)
-                    dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BottomSheet)
+                    //dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BottomSheet)
                     dialog.show(supportFragmentManager, "lol")
                 }
 
@@ -302,10 +302,9 @@ class MainActivity : AppCompatActivity(), NormaListAddDialog.NormaListAddInterfa
      */
     override fun navViewRemoveMonth() {
         val dialog: BottomSheetDialogFragment = MonthSelectRemoveDialog(monthListArray)
-        dialog.setStyle(
-            DialogFragment.STYLE_NORMAL,
-            com.google.android.material.R.style.Theme_Material3_Dark_BottomSheetDialog
-        )
+       /* dialog.setStyle(
+            DialogFragment.STYLE_NO_TITLE,R.style.BottomSheet
+        )*/
         dialog.show(supportFragmentManager, "lol")
     }
 
