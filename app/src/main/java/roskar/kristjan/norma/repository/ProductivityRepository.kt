@@ -6,6 +6,5 @@ import roskar.kristjan.norma.model.Productivity
 
 class ProductivityRepository(private val productivityDao: ProductivityDao) {
 
-    val activeMonth: LiveData<List<Productivity>> = productivityDao.findByMonth()
 
 }

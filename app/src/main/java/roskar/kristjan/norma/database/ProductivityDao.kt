@@ -14,13 +14,13 @@ interface ProductivityDao {
     suspend fun insert(productivity: Productivity)
 
     @Query("SELECT * FROM productivity_table WHERE date LIKE :date")
-    suspend fun findByDate(date: String): LiveData<Productivity>
+    fun findByDate(date: String): LiveData<Productivity>
 
     @Query("SELECT * FROM productivity_table WHERE date LIKE :month")
-    suspend fun findByMonth(month: String): LiveData<List<Productivity>>
+    fun findByMonth(month: String): LiveData<List<Productivity>>
 
     @Query("SELECT * FROM productivity_table")
-    suspend fun getAllData(): LiveData<List<Productivity>>
+    fun getAllData(): LiveData<List<Productivity>>
 
 
     @Query("DELETE FROM productivity_table WHERE date like :month")

@@ -1,22 +1,27 @@
 package roskar.kristjan.norma.viewModel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import roskar.kristjan.norma.database.AppDatabase
-import roskar.kristjan.norma.model.Productivity
-import roskar.kristjan.norma.repository.ProductivityRepository
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+class ViewModel : ViewModel() {
 
-class ViewModel(application: Application): AndroidViewModel(application) {
+    private val _nekineki = MutableLiveData<String>()
+    val nekineki: LiveData<String> = _nekineki
 
-
-    private val productivityRepository: ProductivityRepository
+    private val _activeMonth = MutableLiveData<String>()
+    val activeMonth: LiveData<String> = _activeMonth
 
     init {
+        _nekineki.value = "nekineki"
+    }
 
-        val productivityDao = AppDatabase.getDatabase(application).productivity()
+    fun setNekiNeki(value: String) {
+        _nekineki.value = value
+    }
 
-
+    fun setActiveMonth(value: String) {
+        _activeMonth.value = value
     }
 
 }
+
