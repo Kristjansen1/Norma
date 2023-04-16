@@ -19,8 +19,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        Log.d("nekineki",viewModel.nekineki.value.toString())
-        viewModel.setNekiNeki("blabla")
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 }

@@ -11,13 +11,13 @@ import roskar.kristjan.norma.model.Productivity
 interface ProductivityDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(productivity: Productivity)
+    suspend fun insert(productivity: List<Productivity>)
 
     @Query("SELECT * FROM productivity_table WHERE date LIKE :date")
-    fun findByDate(date: String): LiveData<Productivity>
+    fun findByDate(date: String): List<Productivity>
 
     @Query("SELECT * FROM productivity_table WHERE date LIKE :month")
-    fun findByMonth(month: String): LiveData<List<Productivity>>
+    fun findByMonth(month: String): LiveData<Productivity>
 
     @Query("SELECT * FROM productivity_table")
     fun getAllData(): LiveData<List<Productivity>>

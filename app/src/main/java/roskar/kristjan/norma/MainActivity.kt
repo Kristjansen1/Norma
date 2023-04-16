@@ -10,7 +10,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import roskar.kristjan.norma.utilities.Constants
+import roskar.kristjan.norma.utilities.Util
 import roskar.kristjan.norma.viewModel.ViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,8 +33,9 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = binding.bottomNavigationView
         val textViewActiveMonth = binding.activeMonth
 
+
         val activeMonthObserver = Observer<String> {
-            textViewActiveMonth.text = it
+            textViewActiveMonth.text = Util.monthYearWord(viewModel.activeMonth.value.toString(), Constants.DAY_MONTH_YEAR_NUMBER)
         }
         viewModel.activeMonth.observe(this,activeMonthObserver)
 
