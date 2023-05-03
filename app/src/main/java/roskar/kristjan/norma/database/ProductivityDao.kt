@@ -17,7 +17,7 @@ interface ProductivityDao {
     fun findByDate(date: String): List<Productivity>
 
     @Query("SELECT * FROM productivity_table WHERE date LIKE :month")
-    fun findByMonth(month: String): LiveData<Productivity>
+    fun findByMonth(month: String): LiveData<List<Productivity>>
 
     @Query("SELECT * FROM productivity_table")
     fun getAllData(): LiveData<List<Productivity>>
@@ -25,6 +25,9 @@ interface ProductivityDao {
 
     @Query("DELETE FROM productivity_table WHERE date like :month")
     fun deleteFromProductivityTable(month: String): Int
+
+    @Query("UPDATE productivity_table SET productivity_hours=:productivityHours, working_hours=:workingHours WHERE date = :date")
+    fun update(date: String, productivityHours: Double, workingHours: Double) : Int
 
 
 }

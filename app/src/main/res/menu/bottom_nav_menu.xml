@@ -9,9 +9,9 @@
         android:icon="@drawable/outline_list_24"
         android:title="Productivity" />
     <item
-        android:id="@+id/stats"
-        android:icon="@drawable/monitoring_48px"
-        android:title="Stats" />
+        android:id="@+id/settings"
+        android:icon="@drawable/settings_48px"
+        android:title="Settings" />
     <item
         android:id="@+id/menu"
         android:icon="@drawable/outline_menu_open_24"

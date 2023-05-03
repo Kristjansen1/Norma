@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.myapplication.HomeFragment"
+        android:name="roskar.kristjan.norma.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -15,17 +15,13 @@
             app:destination="@id/productivityFragment" />
     </fragment>
     <fragment
-        android:id="@+id/statsFragment"
-        android:name="com.example.myapplication.StatsFragment"
-        android:label="fragment_stats"
-        tools:layout="@layout/fragment_stats" />
-    <fragment
         android:id="@+id/productivityFragment"
-        android:name="com.example.myapplication.ProductivityFragment"
+        android:name="roskar.kristjan.norma.fragments.ProductivityFragment"
         android:label="fragment_productivity"
-        tools:layout="@layout/fragment_productivity" >
-        <action
-            android:id="@+id/action_productivityFragment_to_statsFragment"
-            app:destination="@id/statsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_productivity" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="roskar.kristjan.norma.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

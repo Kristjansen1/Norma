@@ -7,10 +7,10 @@ import java.time.LocalDate
 
 @Entity(tableName = "productivity_table")
 data class Productivity (
-    @PrimaryKey(autoGenerate = true) val id: Int?,
-    @ColumnInfo(name = "date") val date: String,
-    @ColumnInfo(name = "productivity hours") val productivityHours: Double,
-    @ColumnInfo(name = "working hours") val workingHours: Double,
+    @PrimaryKey(autoGenerate = true) var id: Int?,
+    @ColumnInfo(name = "date") var date: String,
+    @ColumnInfo(name = "productivity_hours") var productivityHours: Double,
+    @ColumnInfo(name = "working_hours") var workingHours: Double,
     //@ColumnInfo(name = "department") val department: String,
     //@ColumnInfo(name = "shift") val shift: Int
     )

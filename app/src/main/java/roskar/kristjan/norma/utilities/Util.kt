@@ -1,7 +1,11 @@
 package roskar.kristjan.norma.utilities
 
+import android.content.Context
 import android.os.Build
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.FragmentManager
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -20,7 +24,7 @@ object Util {
         return formatDate(date,Constants.MONTH_YEAR_WORD,fromFormat)
 
     }
-    private fun formatDate(date: String, newDateFormat: String, oldDateFormat: String): String {
+    fun formatDate(date: String, newDateFormat: String, oldDateFormat: String): String {
 
         val formatFrom = DateTimeFormatter.ofPattern(oldDateFormat)
         val dateToFormat = LocalDate.parse(date,formatFrom)
@@ -28,4 +32,12 @@ object Util {
         return dateToFormat.format(formatTo)
 
     }
+
+    fun log(toString: String) {
+        Log.d("app log",toString)
+    }
+    fun toast(context: Context,text: String) {
+        Toast.makeText(context,text, Toast.LENGTH_SHORT).show()
+    }
+
 }
