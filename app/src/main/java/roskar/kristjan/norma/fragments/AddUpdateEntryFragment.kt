@@ -1,10 +1,13 @@
 package roskar.kristjan.norma.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.myapplication.R
@@ -17,78 +20,81 @@ import roskar.kristjan.norma.utilities.Util
 import roskar.kristjan.norma.viewModel.ViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
+import kotlin.math.abs
+import kotlin.properties.Delegates
 
 class AddUpdateEntryFragment : Fragment() {
 
     private val viewModel: ViewModel by activityViewModels()
     private val item: Productivity = Productivity(null,"",0.0,0.0)
-    private val month: Month = Month(null,"",0,0.0,0.0)
+    //private val month: Month = Month(null,"",0,0.0,0.0)
+
+    private lateinit var binding: FragmentAddUpdateEntryBinding
+
+    private var productivity by Delegates.notNull<Double>()
+    private var workHours by Delegates.notNull<Double>()
+    private lateinit var date: String
+
+    private lateinit var addUpdateBtn: Button
+    private lateinit var editTxtWorkHours: EditText
+    private lateinit var editTxtProductivity: EditText
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Util.log("on create view")
+
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_add_update_entry, container, false)
-
-        val editTxtProductivity = FragmentAddUpdateEntryBinding.bind(rootView).productivity
-        val editTxtWorkHours = FragmentAddUpdateEntryBinding.bind(rootView).workHours
-        val txtFieldDate = FragmentAddUpdateEntryBinding.bind(rootView).date
-        val addUpdateBtn = FragmentAddUpdateEntryBinding.bind(rootView).addUpdate
-
-        var productivity = viewModel.clickedItem.value?.productivityHours.toString()
-        val workHours = viewModel.clickedItem.value?.workingHours.toString()
-        val date = viewModel.clickedItem.value?.date.toString()
+        binding = FragmentAddUpdateEntryBinding.inflate(layoutInflater)
 
 
 
-        if (productivity == "0.0" && workHours == "0.0") {
-            addUpdateBtn.text = "Add"
-            productivity = ""
-        } else {
-            addUpdateBtn.text = "Update"
-        }
-        if (workHours == "0.0") editTxtWorkHours.setText("8") else editTxtWorkHours.setText(workHours)
+        productivity = viewModel.clickedItem.value?.productivityHours!!
+        workHours = viewModel.clickedItem.value?.workingHours!!
+        date = viewModel.clickedItem.value?.date.toString()
 
-        editTxtProductivity.setText(productivity)
+        editTxtProductivity = FragmentAddUpdateEntryBinding.bind(rootView).productivity
+        editTxtWorkHours = FragmentAddUpdateEntryBinding.bind(rootView).workHours
+        addUpdateBtn = FragmentAddUpdateEntryBinding.bind(rootView).addUpdate
+
+        val txtFieldDate = binding.date
+        val day = Util.formatDate(date,"d. EEEE",Constants.DAY_MONTH_YEAR_NUMBER)
+        txtFieldDate.text = day
+
+        setValues()
+
         addUpdateBtn.setOnClickListener {
+            Util.log("listener")
 
-            val p = editTxtProductivity.text.toString()
-            val w = editTxtWorkHours.text.toString()
+            val eTxtProductivity = editTxtProductivity.text.toString()
+            val eTxtWorkHours = editTxtWorkHours.text.toString()
 
-            if (productivity != p || workHours != w) {     // check if any changes ware actualy made
-                if (p.isNotEmpty() && w.isNotEmpty()) {    // check if edit-boxes are not empty
+            if (productivity.toString() != eTxtProductivity || workHours.toString() != eTxtWorkHours) {     // check if any changes ware actualy made
+                if (eTxtProductivity.isNotEmpty() && eTxtWorkHours.isNotEmpty()) {    // check if edit-boxes are not empty
 
                     // productivity_table update
-                    item.productivityHours = p.toDoubleOrNull()!!
-                    item.workingHours = w.toDoubleOrNull()!!
+                    item.productivityHours = eTxtProductivity.toDoubleOrNull()!!
+                    item.workingHours = eTxtWorkHours.toDoubleOrNull()!!
                     item.date = viewModel.clickedItem.value?.date.toString()
                     viewModel.updateEntryProductivityTable(item)
 
                     // month table update
-                    val oldProductivityHours: Double = if (productivity.toDoubleOrNull() == null) {
-                        0.0
-                    } else {
-                        productivity.toDoubleOrNull()!!
-                    }
 
-                    if (item.productivityHours > oldProductivityHours) {
+                    var diff = abs(productivity - item.productivityHours)
+                    var action = setAction(productivity,item.productivityHours)
 
-                        val x = oldProductivityHours.toBigDecimal()
-                        val y = item.productivityHours.toBigDecimal()
-                        val r = y-x
-                        Util.log("clicked add")
-                        viewModel.refreshMonthDb("addToProgress",item.date,r)
-                    }
+                    viewModel.refreshMonthDb(action + "_productivity",item.date,diff.toBigDecimal())
 
-                    if (item.productivityHours < oldProductivityHours) {
-                        Util.log("clicked remove")
-                        val x = BigDecimal(oldProductivityHours)
-                        val y = BigDecimal(item.productivityHours.toString())
-                        val r = x-y
-                        viewModel.refreshMonthDb("removeFromProgress",item.date,r)
-                    }
+                    diff = abs(workHours - item.workingHours)
+                    action = setAction(workHours,item.workingHours)
+
+                    viewModel.refreshMonthDb(action + "_workHours",item.date,diff.toBigDecimal())
+
+
+
 
                     Util.toast(requireContext(), "Success!")
                     parentFragmentManager.popBackStackImmediate()
@@ -102,12 +108,36 @@ class AddUpdateEntryFragment : Fragment() {
             }
         }
 
-        val day = Util.formatDate(date,"d. EEEE",Constants.DAY_MONTH_YEAR_NUMBER)
 
-        editTxtProductivity.setText(productivity)
-        txtFieldDate.text = day
 
 
         return rootView
+    }
+    private fun setAction(value1: Double,value2 : Double): String {
+        var result = ""
+        if (value1 < value2) {
+            result = "addition"
+        } else if (value1 > value2) {
+            result = "subtract"
+        }
+        return result
+    }
+    private fun setValues() {
+        Util.log(productivity.toString())
+        Util.log(workHours.toString())
+        if (productivity == 0.0 && workHours == 0.0) {
+            Util.log("nula")
+            addUpdateBtn.text = "Add"
+
+        } else {
+            addUpdateBtn.text = "Update"
+            editTxtProductivity.setText(productivity.toString())
+        }
+        if (workHours == 0.0) editTxtWorkHours.setText("8") else editTxtWorkHours.setText(workHours.toString())
+        editTxtProductivity.setText(productivity.toString())
+
+        editTxtProductivity.setText(productivity.toString())
+
+
     }
 }

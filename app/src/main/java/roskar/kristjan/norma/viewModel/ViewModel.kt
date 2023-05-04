@@ -121,18 +121,32 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun refreshMonthDb(case: String,date :String,value: BigDecimal) {
 
         when (case) {
-            "addToProgress" -> {
+            "addition_productivity" -> {
                 val x = activeMonthData.value?.monthlyProgress?.toBigDecimal()
                 val r = x?.plus(value)
                 if (r != null) {
                     updateMonthlyProgress(date,r.toDouble())
                 }
             }
-            "removeFromProgress" -> {
+            "subtract_productivity" -> {
                 val x = activeMonthData.value?.monthlyProgress?.toBigDecimal()
                 val r = x?.minus(value)
                 if (r != null) {
                     updateMonthlyProgress(date,r.toDouble())
+                }
+            }
+            "addition_workHours" -> {
+                val x = activeMonthData.value?.workedHours?.toBigDecimal()
+                val r = x?.plus(value)
+                if (r != null) {
+                    updateWorkedHours(date,r.toDouble())
+                }
+            }
+            "subtract_workHours" -> {
+                val x = activeMonthData.value?.workedHours?.toBigDecimal()
+                val r = x?.minus(value)
+                if (r != null) {
+                    updateWorkedHours(date,r.toDouble())
                 }
             }
         }
@@ -142,8 +156,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private fun updateMonthlyProgress(date: String,value: Double) {
         val df = Util.formatDate(date,"M/yyyy","d/M/yyyy")
         val match = "%$df%"
-        Util.log(match.toString())
-        Util.log(value.toString())
         viewModelScope.launch(Dispatchers.IO) {
             appDatabase.monthDao().updateMonthlyProgress(match,value)
         }
@@ -154,14 +166,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             appDatabase.monthDao().updateWorkedHours(match,value)
         }
-    }
-
-    object RefreshmonthDb {
-
-        fun addToMonthlyProgress(value: Double) {
-
-        }
-
     }
 
 }

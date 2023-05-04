@@ -16,6 +16,8 @@ import roskar.kristjan.norma.model.Productivity
 import roskar.kristjan.norma.utilities.Constants
 import roskar.kristjan.norma.utilities.Util
 import roskar.kristjan.norma.viewModel.ViewModel
+import kotlin.Exception
+import kotlin.NullPointerException
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
@@ -49,12 +51,12 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.activeMonthData.observe(this,monthDataObserver)*/
 
-        viewModel.activeMonthData.observe(this) {
-            val progress = it.monthlyProgress
-            val workedHours = it.workedHours
+         viewModel.activeMonthData.observe(this) {
+                val progress = it.monthlyProgress
+                val workedHours = it.workedHours
 
+         }
 
-        }
         viewModel.activeMonth.observe(this,activeMonthObserver)
 
 
