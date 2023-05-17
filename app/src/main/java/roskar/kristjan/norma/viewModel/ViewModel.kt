@@ -10,9 +10,12 @@ import roskar.kristjan.norma.model.Productivity
 import roskar.kristjan.norma.utilities.Constants
 import roskar.kristjan.norma.utilities.Util
 import java.math.BigDecimal
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
+import kotlin.math.abs
+import kotlin.math.sign
 
 class ViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -26,6 +29,15 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val _clickedItem = MutableLiveData<Productivity>()
     val clickedItem: LiveData<Productivity> = _clickedItem
 
+    private var _activeMonthProgress = MutableLiveData<Double>()
+    var activeMonthProgress: LiveData<Double> = _activeMonthProgress
+
+    private var _activeMonthWorkedHours = MutableLiveData<Double>()
+    var activeMonthWorkedHours: LiveData<Double> = _activeMonthWorkedHours
+
+    private var _firstStart = MutableLiveData<Boolean>()
+    var firstStart: LiveData<Boolean> = _firstStart
+
   /*  private val _activeMonthData = MutableLiveData<Month>()
     val activeMonthData: LiveData<Month> = _activeMonthData*/
 
@@ -34,13 +46,26 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var activeMonthData : LiveData<Month>
 
     init {
+        setFirstStart(true)
         setActiveMonth(Util.getCurrentMonth())
+        Util.log("VIEWMODEL INIT")
         getActiveMonthData(
             Util.monthYearNumber(
                 activeMonth.value.toString(),
                 Constants.DAY_MONTH_YEAR_NUMBER
             )
         )
+    }
+
+    fun setFirstStart(value: Boolean) {
+        _firstStart.value = value
+    }
+    fun setActiveMonthProgress(value: Double) {
+        _activeMonthProgress.value = value
+    }
+
+    fun setActiveMonthWorkedHours(value: Double) {
+        _activeMonthWorkedHours.value = value
     }
     // set active month as livedata
     // on app start, and on user selection of new month
@@ -64,8 +89,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     //query productivity_table for all dates in current activeMonth
     private fun getActiveMonthData(month: String){
         val match = "%$month%"
-            activeMonthData = appDatabase.monthDao().getMonthData(match)
-            activeMonthDates = appDatabase.productivityDao().findByMonth(match)
+        activeMonthData = appDatabase.monthDao().getMonthData(match)
+        activeMonthDates = appDatabase.productivityDao().findByMonth(match)
+
+
     }
 
     // add new month to DB
@@ -118,53 +145,57 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun refreshMonthDb(case: String,date :String,value: BigDecimal) {
+    //yes i know, almost identical code repeating itself,.... :) its OK!
 
-        when (case) {
-            "addition_productivity" -> {
-                val x = activeMonthData.value?.monthlyProgress?.toBigDecimal()
-                val r = x?.plus(value)
-                if (r != null) {
-                    updateMonthlyProgress(date,r.toDouble())
-                }
-            }
-            "subtract_productivity" -> {
-                val x = activeMonthData.value?.monthlyProgress?.toBigDecimal()
-                val r = x?.minus(value)
-                if (r != null) {
-                    updateMonthlyProgress(date,r.toDouble())
-                }
-            }
-            "addition_workHours" -> {
-                val x = activeMonthData.value?.workedHours?.toBigDecimal()
-                val r = x?.plus(value)
-                if (r != null) {
-                    updateWorkedHours(date,r.toDouble())
-                }
-            }
-            "subtract_workHours" -> {
-                val x = activeMonthData.value?.workedHours?.toBigDecimal()
-                val r = x?.minus(value)
-                if (r != null) {
-                    updateWorkedHours(date,r.toDouble())
-                }
-            }
+    fun addToMonthlyProgress(date: String, diff: Double) {
+        val progressOld = _activeMonthProgress.value
+        val progressNew = roundNumber(progressOld!! + diff)
+        val df = Util.formatDate(date,Constants.MONTH_YEAR_NUMBER,Constants.DAY_MONTH_YEAR_NUMBER)
+        val match = "%$df%"
+        setActiveMonthProgress(progressNew)
+        viewModelScope.launch(Dispatchers.IO) {
+            appDatabase.monthDao().updateMonthlyProgress(match,progressNew)
         }
 
     }
 
-    private fun updateMonthlyProgress(date: String,value: Double) {
-        val df = Util.formatDate(date,"M/yyyy","d/M/yyyy")
+    fun removeFromMonthlyProgress(date: String, diff: Double) {
+        val progressOld = _activeMonthProgress.value
+        val progressNew = roundNumber(progressOld!! - diff)
+        val df = Util.formatDate(date,Constants.MONTH_YEAR_NUMBER,Constants.DAY_MONTH_YEAR_NUMBER)
         val match = "%$df%"
+        setActiveMonthProgress(progressNew)
         viewModelScope.launch(Dispatchers.IO) {
-            appDatabase.monthDao().updateMonthlyProgress(match,value)
+            appDatabase.monthDao().updateMonthlyProgress(match,progressNew)
         }
     }
-    private fun updateWorkedHours(date: String,value: Double) {
-        val df = Util.formatDate(date,"M/yyyy","d/M/yyyy")
+
+    private fun roundNumber(progressNew: Double): Double {
+        val df = DecimalFormat("#.##")
+        df.roundingMode = RoundingMode.DOWN
+        val roundoff = df.format(progressNew)
+        return roundoff.toDoubleOrNull()!!
+    }
+
+    fun addToWorkingHours(date: String, diff: Double) {
+        val progressOld = _activeMonthWorkedHours.value
+        val progressNew = roundNumber(progressOld!! + diff)
+        val df = Util.formatDate(date,Constants.MONTH_YEAR_NUMBER,Constants.DAY_MONTH_YEAR_NUMBER)
         val match = "%$df%"
+        setActiveMonthWorkedHours(progressNew)
         viewModelScope.launch(Dispatchers.IO) {
-            appDatabase.monthDao().updateWorkedHours(match,value)
+            appDatabase.monthDao().updateWorkedHours(match,progressNew)
+        }
+    }
+
+    fun removeFromWorkingHours(date: String, diff: Double) {
+        val progressOld = _activeMonthWorkedHours.value
+        val progressNew = roundNumber(progressOld!! - diff)
+        val df = Util.formatDate(date,Constants.MONTH_YEAR_NUMBER,Constants.DAY_MONTH_YEAR_NUMBER)
+        val match = "%$df%"
+        setActiveMonthWorkedHours(progressNew)
+        viewModelScope.launch(Dispatchers.IO) {
+            appDatabase.monthDao().updateWorkedHours(match,progressNew)
         }
     }
 

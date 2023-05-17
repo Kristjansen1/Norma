@@ -1,6 +1,5 @@
 package roskar.kristjan.norma.fragments
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,18 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.myapplication.R
-import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.databinding.FragmentAddUpdateEntryBinding
-import roskar.kristjan.norma.model.Month
 import roskar.kristjan.norma.model.Productivity
 import roskar.kristjan.norma.utilities.Constants
 import roskar.kristjan.norma.utilities.Util
 import roskar.kristjan.norma.viewModel.ViewModel
-import java.math.BigDecimal
-import java.time.LocalDate
 import kotlin.math.abs
 import kotlin.properties.Delegates
 
@@ -64,8 +58,6 @@ class AddUpdateEntryFragment : Fragment() {
         val day = Util.formatDate(date,"d. EEEE",Constants.DAY_MONTH_YEAR_NUMBER)
         txtFieldDate.text = day
 
-        setValues()
-
         addUpdateBtn.setOnClickListener {
             Util.log("listener")
 
@@ -82,16 +74,15 @@ class AddUpdateEntryFragment : Fragment() {
                     viewModel.updateEntryProductivityTable(item)
 
                     // month table update
-
-                    var diff = abs(productivity - item.productivityHours)
-                    var action = setAction(productivity,item.productivityHours)
-
-                    viewModel.refreshMonthDb(action + "_productivity",item.date,diff.toBigDecimal())
+                    var diff = 0.0
+                    diff = abs(productivity- item.productivityHours)
+                    if (productivity < item.productivityHours) viewModel.addToMonthlyProgress(item.date,diff)
+                    if (productivity > item.productivityHours) viewModel.removeFromMonthlyProgress(item.date,diff)
 
                     diff = abs(workHours - item.workingHours)
-                    action = setAction(workHours,item.workingHours)
+                    if (workHours < item.workingHours) viewModel.addToWorkingHours(item.date,diff)
+                    if (workHours > item.workingHours) viewModel.removeFromWorkingHours(item.date,diff)
 
-                    viewModel.refreshMonthDb(action + "_workHours",item.date,diff.toBigDecimal())
 
 
 
@@ -112,15 +103,6 @@ class AddUpdateEntryFragment : Fragment() {
 
 
         return rootView
-    }
-    private fun setAction(value1: Double,value2 : Double): String {
-        var result = ""
-        if (value1 < value2) {
-            result = "addition"
-        } else if (value1 > value2) {
-            result = "subtract"
-        }
-        return result
     }
     private fun setValues() {
         Util.log(productivity.toString())
