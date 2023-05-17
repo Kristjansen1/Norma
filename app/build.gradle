@@ -14,8 +14,8 @@ android {
         applicationId "roskar.kristjan.norma"
         minSdk 26
         targetSdk 33
-        versionCode 6
-        versionName "1.104"
+        versionCode 7
+        versionName "1.105"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
